@@ -29,37 +29,231 @@
 </head>
 <body>
 <div id="root"></div>
+<button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+
+<script>
+// ── TRANSLATION SYSTEM ──────────────────────────────────────────────────────
+window._lang = 'ar';
+const T = {
+  ar: {
+    // Nav
+    tagline: 'شخّص · عالج · نمّ ثروتك',
+    getIt: 'احصل عليه — $19.99',
+    // Steps
+    steps: ['مرحباً','الشخصية','الدخل','الأصول','الديون','المصروفات','المخاطر','الأهداف','التشخيص'],
+    // Welcome
+    philosophy: 'فلسفة المنصة',
+    phil1: 'ليس كل شخص جاهزاً للاستثمار. الصحة المالية أولاً.',
+    phil2: 'نشخّص وضعك الكامل قبل أي توصية.',
+    phil3: 'نقدم خطة علاج مخصصة لوضعك الفريد.',
+    phil4: 'الذكاء الاصطناعي يرافقك في كل خطوة.',
+    privacy: '🔒 بياناتك محفوظة محلياً على جهازك فقط',
+    startBtn: 'ابدأ التشخيص ←',
+    nextBtn: 'التالي ←',
+    backBtn: '→ رجوع',
+    diagBtn: '🔬 عرض التشخيص الكامل',
+    // Personal
+    personalTitle: 'البيانات الشخصية', personalSub: 'معلوماتك الأساسية',
+    nameLabel: 'الاسم', ageLabel: 'العمر', agePfx: 'سنة',
+    maritalLabel: 'الحالة الاجتماعية',
+    maritalOpts: ['أعزب','متزوج','مطلق','أرمل'],
+    dependentsLabel: 'المعالون', dependentsPfx: 'فرد',
+    employmentLabel: 'حالة التوظيف',
+    employmentOpts: ['موظف حكومي','موظف قطاع خاص','عسكري','أعمال حرة','صاحب عمل','متقاعد'],
+    // Income
+    incomeTitle: 'مصادر الدخل', incomeSub: 'دخلك الشهري من جميع المصادر',
+    salaryLabel: 'الراتب الأساسي', salaryHint: 'الراتب الشهري الصافي',
+    freelanceLabel: 'دخل العمل الحر / العمولات',
+    rentalLabel: 'دخل الإيجارات',
+    otherIncomeLabel: 'مصادر أخرى',
+    totalIncomeLabel: 'إجمالي الدخل الشهري',
+    // Assets
+    assetsTitle: 'الأصول', assetsSub: 'ما تملكه من أصول وممتلكات',
+    assetLabels: ['النقد في اليد','الأرصدة البنكية','الذهب والمجوهرات','العقارات','السيارات','الأسهم والصناديق','العملات الرقمية','أصول أخرى'],
+    totalAssetsLabel: 'إجمالي الأصول',
+    // Liabilities
+    liabTitle: 'الديون والالتزامات', liabSub: 'الأقساط الشهرية والأرصدة',
+    liabTypes: ['قرض شخصي','بطاقات ائتمانية','قرض سيارة','رهن عقاري'],
+    balLabel: 'الرصيد المتبقي', payLabel: 'القسط الشهري',
+    familyDebtLabel: 'ديون عائلية', otherDebtLabel: 'ديون أخرى',
+    // Expenses
+    expTitle: 'المصروفات الشهرية', expSub: 'جميع نفقاتك الشهرية',
+    fixedLabel: '◆ المصروفات الثابتة', varLabel: '◆ المصروفات المتغيرة',
+    fixedItems: ['السكن','الكهرباء والماء','التأمين','المدرسة','الإنترنت','المواصلات'],
+    varItems: ['الطعام','الترفيه','التسوق','المطاعم','السفر','متنوعات'],
+    // Risk
+    riskTitle: 'ملف المخاطر', riskSub: 'حدد مستوى تحملك للمخاطر',
+    riskProfileLabel: 'ملف مخاطرك',
+    riskProfiles: {conservative:'محافظ', moderate:'معتدل', balanced:'متوازن', growth:'نمو', aggressive:'عدواني'},
+    // Goals
+    goalsTitle: 'الأهداف المالية', goalsSub: 'حدد أهدافك وسنحسب القسط الشهري',
+    goalTypes: ['التقاعد','شراء منزل','التعليم','شراء سيارة','طوارئ','بناء الثروة'],
+    targetLabel: 'المبلغ (BD)', yearsLabel: 'المدة (سنوات)', yearsPfx: 'سنة',
+    addGoalBtn: '+ إضافة الهدف',
+    noGoals: 'لم تضف أهدافاً بعد',
+    goalYears: 'خلال {y} سنوات', goalMonthly: 'BD {m}/شهر',
+    // Diagnosis
+    diagTitle: 'تقرير الصحة المالية الشامل',
+    netWorthLabel: 'صافي الثروة',
+    assetsTotal: 'أصول', liabTotal: 'ديون',
+    cashflowLabel: 'التدفق النقدي', positive: 'إيجابي ✓', negative: 'سلبي ✗',
+    debtRatioLabel: 'نسبة الديون',
+    emergencyLabel: 'صندوق الطوارئ', emergencyUnit: 'شهر',
+    savingsLabel: 'معدل الادخار',
+    healthLabels: {excellent:'ممتاز', good:'جيد', average:'متوسط', weak:'ضعيف', critical:'حرج'},
+    debtLabels: {excellent:'ممتاز', good:'جيد', warning:'تحذير', high:'خطر مرتفع', critical:'حرج'},
+    readinessLabels: {investor:'مستوى المستثمر', ready:'جاهز للاستثمار', preparing:'مرحلة التحضير', notReady:'غير جاهز بعد'},
+    readinessAdvice: ['ركّز على سداد الديون وبناء الطوارئ أولاً قبل الاستثمار.','أنت في مرحلة التحضير، استمر في تحسين مؤشراتك.','وضعك جيد، يمكنك البدء بالاستثمار بحذر.','وضعك ممتاز! أنت مؤهل تماماً للاستثمار.'],
+    cashflowTitle: '💳 تحليل التدفق النقدي',
+    fixedExpBar: 'مصروفات ثابتة', varExpBar: 'مصروفات متغيرة', debtBar: 'أقساط الديون', savingsBar: 'نسبة الادخار',
+    incomeTotal: 'دخل', expTotal: 'مصروفات',
+    readinessTitle: '🎯 جاهزية الاستثمار',
+    allocTitle: 'التوزيع المقترح',
+    equityLabel: 'أسهم وصناديق', fixedIncLabel: 'دخل ثابت وصكوك', cashLabel: 'نقد واحتياطي',
+    projTitle: '📈 إسقاطات الثروة', projSub: 'شهرياً بعائد 8% سنوياً',
+    projLabel: 'القيمة المتوقعة بعد {y} سنوات',
+    goalsHeading: '🎯 خطة الأهداف',
+    goalAvailable: '% من التوفير المتاح', goalNeeds: 'BD {m}/شهر · خلال {y} سنة',
+    debtHeading: '🏦 خطة تصفية الديون',
+    snowball: 'كرة الثلج ❄️', snowballDesc: 'ابدأ بأصغر دين', snowballSub: 'يبني الدافعية',
+    avalanche: 'الانهيار الجليدي 🏔️', avalancheDesc: 'ابدأ بأعلى فائدة', avalancheSub: 'يوفر أكثر',
+    totalDebt: 'إجمالي الديون', monthlyPayments: 'الأقساط الشهرية', freedomEst: 'للتحرر الكامل تقريباً', freedomUnit: 'شهر',
+    aiTitle: 'الدكتور المالي', aiSub: 'تشخيص بالذكاء الاصطناعي',
+    aiBtn: 'احصل على تشخيصك المالي الآن 🔬',
+    aiLoading: 'الدكتور يحلل وضعك المالي...',
+    aiRetry: '🔄 إعادة التشخيص',
+    securityNote: '🔒 جميع بيانات العميل محفوظة بشكل آمن وتُعامَل بسرية تامة',
+    readinessScore: 'جاهزية الاستثمار', debtScore: 'نسبة الديون', emergencyScore: 'أشهر طوارئ',
+    healthScore: 'الصحة المالية',
+  },
+  en: {
+    tagline: 'Diagnose · Treat · Grow Your Wealth',
+    getIt: 'Get It — $19.99',
+    steps: ['Welcome','Personal','Income','Assets','Debts','Expenses','Risk','Goals','Diagnosis'],
+    philosophy: 'Our Philosophy',
+    phil1: 'Not everyone is ready to invest. Financial health comes first.',
+    phil2: 'We diagnose your full financial picture before any recommendation.',
+    phil3: 'We provide a customized treatment plan for your unique situation.',
+    phil4: 'AI guides you every step of the way.',
+    privacy: '🔒 Your data is stored locally on your device only',
+    startBtn: 'Start Diagnosis ←',
+    nextBtn: 'Next ←',
+    backBtn: '→ Back',
+    diagBtn: '🔬 View Full Diagnosis',
+    personalTitle: 'Personal Info', personalSub: 'Your basic information',
+    nameLabel: 'Full Name', ageLabel: 'Age', agePfx: 'yrs',
+    maritalLabel: 'Marital Status',
+    maritalOpts: ['Single','Married','Divorced','Widowed'],
+    dependentsLabel: 'Dependents', dependentsPfx: 'ppl',
+    employmentLabel: 'Employment Status',
+    employmentOpts: ['Government Employee','Private Sector','Military','Freelancer','Business Owner','Retired'],
+    incomeTitle: 'Income Sources', incomeSub: 'Your monthly income from all sources',
+    salaryLabel: 'Base Salary', salaryHint: 'Net monthly salary',
+    freelanceLabel: 'Freelance / Commission',
+    rentalLabel: 'Rental Income',
+    otherIncomeLabel: 'Other Sources',
+    totalIncomeLabel: 'Total Monthly Income',
+    assetsTitle: 'Assets', assetsSub: 'Everything you own',
+    assetLabels: ['Cash on Hand','Bank Balances','Gold & Jewelry','Real Estate','Vehicles','Stocks & Funds','Crypto','Other Assets'],
+    totalAssetsLabel: 'Total Assets',
+    liabTitle: 'Debts & Liabilities', liabSub: 'Monthly payments and balances',
+    liabTypes: ['Personal Loan','Credit Cards','Car Loan','Mortgage'],
+    balLabel: 'Remaining Balance', payLabel: 'Monthly Payment',
+    familyDebtLabel: 'Family Debts', otherDebtLabel: 'Other Debts',
+    expTitle: 'Monthly Expenses', expSub: 'All your regular monthly expenses',
+    fixedLabel: '◆ Fixed Expenses', varLabel: '◆ Variable Expenses',
+    fixedItems: ['Housing','Utilities','Insurance','School Fees','Internet','Transport'],
+    varItems: ['Food','Entertainment','Shopping','Restaurants','Travel','Miscellaneous'],
+    riskTitle: 'Risk Profile', riskSub: 'Determine your risk tolerance',
+    riskProfileLabel: 'Your Risk Profile',
+    riskProfiles: {conservative:'Conservative', moderate:'Moderate', balanced:'Balanced', growth:'Growth', aggressive:'Aggressive'},
+    goalsTitle: 'Financial Goals', goalsSub: 'Set goals and we calculate monthly savings needed',
+    goalTypes: ['Retirement','Buy a Home','Education','Buy a Car','Emergency Fund','Wealth Building'],
+    targetLabel: 'Target Amount (BD)', yearsLabel: 'Time Frame (years)', yearsPfx: 'yrs',
+    addGoalBtn: '+ Add Goal',
+    noGoals: 'No goals added yet',
+    goalYears: 'In {y} years', goalMonthly: 'BD {m}/mo',
+    diagTitle: 'Comprehensive Financial Health Report',
+    netWorthLabel: 'Net Worth',
+    assetsTotal: 'Assets', liabTotal: 'Debts',
+    cashflowLabel: 'Cash Flow', positive: 'Positive ✓', negative: 'Negative ✗',
+    debtRatioLabel: 'Debt Ratio',
+    emergencyLabel: 'Emergency Fund', emergencyUnit: 'mo',
+    savingsLabel: 'Savings Rate',
+    healthLabels: {excellent:'Excellent', good:'Good', average:'Average', weak:'Weak', critical:'Critical'},
+    debtLabels: {excellent:'Excellent', good:'Good', warning:'Warning', high:'High Risk', critical:'Critical'},
+    readinessLabels: {investor:'Investor Level', ready:'Ready to Invest', preparing:'Preparation Stage', notReady:'Not Ready Yet'},
+    readinessAdvice: ['Focus on paying off debt and building emergency fund before investing.','You're in preparation stage. Keep improving your metrics.','Good financial health. You can start investing carefully.','Excellent! You're fully qualified to invest confidently.'],
+    cashflowTitle: '💳 Cash Flow Analysis',
+    fixedExpBar: 'Fixed Expenses', varExpBar: 'Variable Expenses', debtBar: 'Debt Payments', savingsBar: 'Savings Rate',
+    incomeTotal: 'Income', expTotal: 'Expenses',
+    readinessTitle: '🎯 Investment Readiness',
+    allocTitle: 'Suggested Allocation',
+    equityLabel: 'Equities & Funds', fixedIncLabel: 'Fixed Income & Sukuk', cashLabel: 'Cash & Reserves',
+    projTitle: '📈 Wealth Projections', projSub: '/mo at 8% annual return',
+    projLabel: 'Expected value in {y} years',
+    goalsHeading: '🎯 Goals Plan',
+    goalAvailable: '% of available savings', goalNeeds: 'BD {m}/mo · in {y} yrs',
+    debtHeading: '🏦 Debt Elimination Plan',
+    snowball: 'Snowball ❄️', snowballDesc: 'Pay smallest debt first', snowballSub: 'Builds momentum',
+    avalanche: 'Avalanche 🏔️', avalancheDesc: 'Pay highest interest first', avalancheSub: 'Saves more money',
+    totalDebt: 'Total Debts', monthlyPayments: 'Monthly Payments', freedomEst: 'Est. debt-free in', freedomUnit: 'mo',
+    aiTitle: 'AI Financial Doctor', aiSub: 'Personalized AI-powered diagnosis',
+    aiBtn: 'Get Your Financial Diagnosis Now 🔬',
+    aiLoading: 'Doctor is analyzing your finances...',
+    aiRetry: '🔄 Re-analyze',
+    securityNote: '🔒 All client data is stored securely and treated with complete confidentiality',
+    readinessScore: 'Invest. Readiness', debtScore: 'Debt Ratio', emergencyScore: 'Emergency Mo.',
+    healthScore: 'Health Score',
+  }
+};
+
+function t(key) { return (T[window._lang] || T.ar)[key] || key; }
+
+function toggleLang() {
+  window._lang = window._lang === 'ar' ? 'en' : 'ar';
+  const btn = document.getElementById('langBtn');
+  btn.textContent = window._lang === 'ar' ? 'EN' : 'عربي';
+  document.documentElement.lang = window._lang === 'ar' ? 'ar' : 'en';
+  document.documentElement.dir = window._lang === 'ar' ? 'rtl' : 'ltr';
+  // Re-render React app
+  if (window._rerender) window._rerender();
+}
+</script>
+
 <script type="text/babel">
 const {useState,useEffect,useRef}=React;
 
 const STEPS=[
-  {id:"welcome",label:"مرحباً"},
-  {id:"personal",label:"الشخصية"},
-  {id:"income",label:"الدخل"},
-  {id:"assets",label:"الأصول"},
-  {id:"liabilities",label:"الديون"},
-  {id:"expenses",label:"المصروفات"},
-  {id:"risk",label:"المخاطر"},
-  {id:"goals",label:"الأهداف"},
-  {id:"diagnosis",label:"التشخيص"},
+  {id:"welcome"},{id:"personal"},{id:"income"},{id:"assets"},
+  {id:"liabilities"},{id:"expenses"},{id:"risk"},{id:"goals"},{id:"diagnosis"}
 ];
+function getStepLabel(i){ return (window.T?.[window._lang||'ar']?.steps||window.T?.ar?.steps)?.[i]||''; }
 
-const RISK_Q=[
+const RISK_Q_AR=[
   {id:"exp",q:"ما مدى خبرتك في الاستثمار؟",opts:["لا خبرة","مبتدئ","متوسط","خبير"],scores:[0,25,65,100]},
   {id:"loss",q:"إذا انخفضت محفظتك 20%، ماذا ستفعل؟",opts:["أبيع كل شيء","أبيع جزءاً","أنتظر","أشتري أكثر"],scores:[0,25,65,100]},
   {id:"horizon",q:"ما أفق استثمارك الزمني؟",opts:["أقل من سنة","1-3 سنوات","3-7 سنوات","أكثر من 7 سنوات"],scores:[0,25,65,100]},
   {id:"stability",q:"مدى استقرار دخلك الشهري؟",opts:["غير مستقر","متذبذب نسبياً","مستقر","مستقر جداً"],scores:[0,25,65,100]},
   {id:"goal",q:"هدفك الأساسي من الاستثمار؟",opts:["حماية رأس المال","دخل ثابت","نمو متوازن","نمو مرتفع"],scores:[0,25,65,100]},
 ];
-
-const GOAL_TYPES=[
-  {id:"retirement",label:"التقاعد",icon:"🏖️"},
-  {id:"house",label:"شراء منزل",icon:"🏠"},
-  {id:"education",label:"التعليم",icon:"🎓"},
-  {id:"car",label:"شراء سيارة",icon:"🚗"},
-  {id:"emergency",label:"طوارئ",icon:"🛡️"},
-  {id:"wealth",label:"بناء الثروة",icon:"💎"},
+const RISK_Q_EN=[
+  {id:"exp",q:"How experienced are you with investing?",opts:["No experience","Beginner","Intermediate","Expert"],scores:[0,25,65,100]},
+  {id:"loss",q:"If your portfolio drops 20%, what do you do?",opts:["Sell everything","Sell some","Wait","Buy more"],scores:[0,25,65,100]},
+  {id:"horizon",q:"What is your investment time horizon?",opts:["Less than 1 year","1-3 years","3-7 years","More than 7 years"],scores:[0,25,65,100]},
+  {id:"stability",q:"How stable is your monthly income?",opts:["Unstable","Somewhat stable","Stable","Very stable"],scores:[0,25,65,100]},
+  {id:"goal",q:"What is your primary investment goal?",opts:["Capital protection","Fixed income","Balanced growth","High growth"],scores:[0,25,65,100]},
 ];
+function getRiskQ(){ return window._lang==='en'?RISK_Q_EN:RISK_Q_AR; }
+const RISK_Q = RISK_Q_AR;
+
+const GOAL_IDS=["retirement","house","education","car","emergency","wealth"];
+const GOAL_ICONS=["🏖️","🏠","🎓","🚗","🛡️","💎"];
+function getGoalTypes(){
+  const labels=window.T?.[window._lang||'ar']?.goalTypes||window.T?.ar?.goalTypes||[];
+  return GOAL_IDS.map((id,i)=>({id,label:labels[i]||id,icon:GOAL_ICONS[i]}));
+}
+const GOAL_TYPES=getGoalTypes();
 
 function fmt(n){if(!n||isNaN(n))return"0";return Math.abs(n).toLocaleString("ar-BH",{maximumFractionDigits:0});}
 function fv(m,y,r=0.08){const n=y*12,rt=r/12;return rt===0?m*n:m*((Math.pow(1+rt,n)-1)/rt);}
@@ -197,7 +391,7 @@ function AIDoctor({metrics}){
         body:JSON.stringify({
           model:"claude-sonnet-4-20250514",
           max_tokens:1000,
-          system:`أنت "الدكتور المالي" في منصة Cash Clinic Pro. تحدث دائماً بالعربية الخليجية الواضحة. أنت خبير مالي يشخّص الوضع المالي ويقدم توصيات عملية. كن مباشراً واحترافياً. قدّم 4-5 توصيات مرقّمة مع رموز تعبيرية. أضف في النهاية "⭐ الخطوة الأولى الأهم" كتوصية مميزة.`,
+          system:window._lang==='en'?`You are the "AI Financial Doctor" at Cash Clinic Pro. Always respond in English. You are a financial expert who diagnoses financial situations and provides practical recommendations. Be direct and professional. Provide 4-5 numbered recommendations with emojis. End with "⭐ Most Important First Step" as a highlighted recommendation.`:`أنت "الدكتور المالي" في منصة Cash Clinic Pro. تحدث دائماً بالعربية الخليجية الواضحة. أنت خبير مالي يشخّص الوضع المالي ويقدم توصيات عملية. كن مباشراً واحترافياً. قدّم 4-5 توصيات مرقّمة مع رموز تعبيرية. أضف في النهاية "⭐ الخطوة الأولى الأهم" كتوصية مميزة.\`,`,
           messages:[{role:"user",content:`بيانات المريض المالي:
 - الدخل الشهري: BD ${fmt(m.totalIncome)}
 - التدفق النقدي: BD ${fmt(m.cashFlow)} (${m.cashFlow>=0?"إيجابي":"سلبي"})
@@ -221,8 +415,8 @@ function AIDoctor({metrics}){
       <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
         <div style={{fontSize:34}}>🩺</div>
         <div>
-          <div style={{fontSize:16,fontWeight:900,color:"#C9A84C"}}>الدكتور المالي</div>
-          <div style={{fontSize:11,color:"#6a8a6a"}}>تشخيص بالذكاء الاصطناعي</div>
+          <div style={{fontSize:16,fontWeight:900,color:"#C9A84C"}}>{(window.T?.[window._lang||"ar"]||window.T?.ar)?.aiTitle||"الدكتور المالي"}</div>
+          <div style={{fontSize:11,color:"#6a8a6a"}}>{(window.T?.[window._lang||"ar"]||window.T?.ar)?.aiSub||"تشخيص بالذكاء الاصطناعي"}</div>
         </div>
       </div>
       {!asked?(
@@ -232,7 +426,7 @@ function AIDoctor({metrics}){
       ):loading?(
         <div style={{textAlign:"center",padding:24}}>
           <div style={{fontSize:30,animation:"spin 1s linear infinite",display:"inline-block"}}>⚕️</div>
-          <div style={{color:"#8aad8a",marginTop:10,fontSize:13}}>الدكتور يحلل وضعك المالي...</div>
+          <div style={{color:"#8aad8a",marginTop:10,fontSize:13}}>{(window.T?.[window._lang||"ar"]||window.T?.ar)?.aiLoading||"جار التحليل..."}</div>
         </div>
       ):(
         <div>
@@ -265,13 +459,13 @@ function DiagnosisPage({metrics,goals,setProjYears,projYears}){
     <div>
       {/* Hero */}
       <div style={{background:"linear-gradient(135deg,#0a2a0a,#162616)",border:"1px solid #C9A84C33",borderRadius:20,padding:22,marginBottom:16,textAlign:"center"}}>
-        <div style={{fontSize:12,color:"#6a8a6a",marginBottom:14}}>تقرير الصحة المالية الشامل</div>
+        <div style={{fontSize:12,color:"#6a8a6a",marginBottom:14}}>{L.diagTitle}</div>
         <ScoreRing score={m.healthScore} size={130} label="الصحة المالية" color={hColor}/>
         <div style={{marginTop:10}}>
           <span style={{background:hColor+"22",border:`1px solid ${hColor}66`,color:hColor,borderRadius:20,padding:"3px 14px",fontSize:12,fontWeight:700}}>{hLabel}</span>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginTop:18}}>
-          {[{v:`${Math.round(m.readiness)}`,l:"جاهزية الاستثمار",c:rcColor},{v:`${Math.round(m.debtRatio)}%`,l:"نسبة الديون",c:drColor},{v:m.emergencyMonths.toFixed(1),l:"أشهر طوارئ",c:emColor}].map((x,i)=>(
+          {[{v:`${Math.round(m.readiness)}`,l:L.readinessScore,c:rcColor},{v:`${Math.round(m.debtRatio)}%`,l:L.debtScore,c:drColor},{v:m.emergencyMonths.toFixed(1),l:L.emergencyScore,c:emColor}].map((x,i)=>(
             <div key={i} style={{textAlign:"center"}}>
               <div style={{fontSize:20,fontWeight:900,color:x.c}}>{x.v}</div>
               <div style={{fontSize:10,color:"#6a8a6a",marginTop:2}}>{x.l}</div>
@@ -283,9 +477,9 @@ function DiagnosisPage({metrics,goals,setProjYears,projYears}){
       {/* Net Worth */}
       <div style={{background:m.netWorth>=0?"linear-gradient(135deg,#0a2a0a,#162616)":"linear-gradient(135deg,#2a0a0a,#1a0808)",border:`1px solid ${m.netWorth>=0?"#4CAF5044":"#F4433644"}`,borderRadius:14,padding:16,marginBottom:14,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div>
-          <div style={{fontSize:11,color:"#8aad8a"}}>صافي الثروة</div>
+          <div style={{fontSize:11,color:"#8aad8a"}}>{L.netWorthLabel}</div>
           <div style={{fontSize:24,fontWeight:900,color:m.netWorth>=0?"#4CAF50":"#F44336"}}>BD {fmt(m.netWorth)}</div>
-          <div style={{fontSize:10,color:"#4a6a4a",marginTop:2}}>أصول: BD {fmt(m.totalAssets)} | ديون: BD {fmt(m.totalLiabilities)}</div>
+          <div style={{fontSize:10,color:"#4a6a4a",marginTop:2}}>{L.assetsTotal}: BD {fmt(m.totalAssets)} | {L.liabTotal}: BD {fmt(m.totalLiabilities)}</div>
         </div>
         <div style={{fontSize:32}}>{m.netWorth>=0?"📈":"📉"}</div>
       </div>
@@ -420,6 +614,11 @@ function DiagnosisPage({metrics,goals,setProjYears,projYears}){
 
 function App(){
   const[step,setStep]=useState(0);
+  const[lang,setLang]=useState('ar');
+  React.useEffect(()=>{ window._rerender=()=>setLang(window._lang); },[]);
+  const L=window.T?.[lang]||window.T?.ar;
+  const RQ=lang==='en'?RISK_Q_EN:RISK_Q_AR;
+  const GT=getGoalTypes();
   const[personal,setPersonal]=useState({name:"",age:"",marital:"أعزب",dependents:"0",employment:"موظف حكومي"});
   const[income,setIncome]=useState({salary:"",freelance:"",rental:"",other:""});
   const[assets,setAssets]=useState({cash:"",bank:"",gold:"",realestate:"",vehicles:"",stocks:"",crypto:"",other:""});
@@ -451,11 +650,10 @@ function App(){
         <div style={{textAlign:"center",padding:"30px 10px"}}>
           <div style={{fontSize:64,marginBottom:16}}>🏥</div>
           <div style={{fontSize:28,fontWeight:900,color:"#C9A84C",marginBottom:6}}>Cash Clinic Pro</div>
-          <div style={{fontSize:13,color:"#8aad8a",marginBottom:6}}>Diagnose. Treat. Grow Your Wealth.</div>
-          <div style={{fontSize:12,color:"#4a6a4a",marginBottom:28}}>شخّص · عالج · نمّ ثروتك</div>
+          <div style={{fontSize:13,color:"#8aad8a",marginBottom:6}}>{L.tagline}</div>
           <div style={{background:"#0f1f0f",border:"1px solid #C9A84C33",borderRadius:16,padding:20,marginBottom:24,textAlign:"right"}}>
-            <div style={{color:"#C9A84C",fontSize:14,fontWeight:800,marginBottom:14}}>فلسفة المنصة</div>
-            {["ليس كل شخص جاهزاً للاستثمار. الصحة المالية أولاً.","نشخّص وضعك الكامل قبل أي توصية.","نقدم خطة علاج مخصصة لوضعك الفريد.","الذكاء الاصطناعي يرافقك في كل خطوة."].map((t,i)=>(
+            <div style={{color:"#C9A84C",fontSize:14,fontWeight:800,marginBottom:14}}>{L.philosophy}</div>
+            {[L.phil1,L.phil2,L.phil3,L.phil4].map((t,i)=>(
               <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:10}}>
                 <span style={{color:"#C9A84C",fontWeight:900,minWidth:18,fontSize:13}}>{i+1}.</span>
                 <span style={{color:"#c8e0c8",fontSize:12,lineHeight:1.6}}>{t}</span>
@@ -463,13 +661,13 @@ function App(){
             ))}
           </div>
           <div style={{background:"#0a150a",border:"1px solid #1a2a1a",borderRadius:10,padding:10,marginBottom:20,fontSize:11,color:"#4a6a4a"}}>
-            🔒 بياناتك محفوظة محلياً على جهازك فقط
+            {L.privacy}
           </div>
         </div>
       );
       case 1:return(
         <div>
-          <SectionHeader icon="👤" title="البيانات الشخصية" sub="معلوماتك الأساسية"/>
+          <SectionHeader icon="👤" title={L.personalTitle} sub={L.personalSub}/>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0 12px"}}>
             <Input label="الاسم" value={personal.name} onChange={v=>setPersonal({...personal,name:v})} prefix="" type="text"/>
             <Input label="العمر" value={personal.age} onChange={v=>setPersonal({...personal,age:v})} prefix="سنة"/>
@@ -481,32 +679,32 @@ function App(){
       );
       case 2:return(
         <div>
-          <SectionHeader icon="💰" title="مصادر الدخل" sub="دخلك الشهري من جميع المصادر"/>
-          <Input label="الراتب الأساسي" value={income.salary} onChange={v=>setIncome({...income,salary:v})} hint="الراتب الشهري الصافي"/>
-          <Input label="دخل العمل الحر / العمولات" value={income.freelance} onChange={v=>setIncome({...income,freelance:v})}/>
-          <Input label="دخل الإيجارات" value={income.rental} onChange={v=>setIncome({...income,rental:v})}/>
-          <Input label="مصادر أخرى" value={income.other} onChange={v=>setIncome({...income,other:v})}/>
+          <SectionHeader icon="💰" title={L.incomeTitle} sub={L.incomeSub}/>
+          <Input label={L.salaryLabel} value={income.salary} onChange={v=>setIncome({...income,salary:v})} hint={L.salaryHint}/>
+          <Input label={L.freelanceLabel} value={income.freelance} onChange={v=>setIncome({...income,freelance:v})}/>
+          <Input label={L.rentalLabel} value={income.rental} onChange={v=>setIncome({...income,rental:v})}/>
+          <Input label={L.otherIncomeLabel} value={income.other} onChange={v=>setIncome({...income,other:v})}/>
           {totalInc>0&&<div style={{background:"#0f2a0f",border:"1px solid #C9A84C44",borderRadius:10,padding:14,marginTop:4}}>
-            <div style={{color:"#8aad8a",fontSize:11}}>إجمالي الدخل الشهري</div>
+            <div style={{color:"#8aad8a",fontSize:11}}>{L.totalIncomeLabel}</div>
             <div style={{color:"#C9A84C",fontSize:22,fontWeight:900}}>BD {fmt(totalInc)}</div>
           </div>}
         </div>
       );
       case 3:return(
         <div>
-          <SectionHeader icon="🏦" title="الأصول" sub="ما تملكه من أصول وممتلكات"/>
-          {[["cash","النقد في اليد"],["bank","الأرصدة البنكية"],["gold","الذهب والمجوهرات"],["realestate","العقارات"],["vehicles","السيارات"],["stocks","الأسهم والصناديق"],["crypto","العملات الرقمية"],["other","أصول أخرى"]].map(([k,l])=>(
+          <SectionHeader icon="🏦" title={L.assetsTitle} sub={L.assetsSub}/>
+          {[["cash",0],["bank",1],["gold",2],["realestate",3],["vehicles",4],["stocks",5],["crypto",6],["other",7]].map(([k,li])=>{const l=L.assetLabels?.[li]||k; return(
             <Input key={k} label={l} value={assets[k]} onChange={v=>setAssets({...assets,[k]:v})}/>
-          ))}
+          );})}
           {metrics.totalAssets>0&&<div style={{background:"#0f2a0f",border:"1px solid #4CAF5044",borderRadius:10,padding:14}}>
-            <div style={{color:"#8aad8a",fontSize:11}}>إجمالي الأصول</div>
+            <div style={{color:"#8aad8a",fontSize:11}}>{L.totalAssetsLabel}</div>
             <div style={{color:"#4CAF50",fontSize:22,fontWeight:900}}>BD {fmt(metrics.totalAssets)}</div>
           </div>}
         </div>
       );
       case 4:return(
         <div>
-          <SectionHeader icon="⚖️" title="الديون والالتزامات" sub="الأقساط الشهرية والأرصدة"/>
+          <SectionHeader icon="⚖️" title={L.liabTitle} sub={L.liabSub}/>
           {[["personal","personalPay","قرض شخصي"],["credit","creditPay","بطاقات ائتمانية"],["car","carPay","قرض سيارة"],["mortgage","mortgagePay","رهن عقاري"]].map(([bal,pay,label])=>(
             <div key={bal} style={{background:"#100f0f",border:"1px solid #2a1a1a",borderRadius:10,padding:14,marginBottom:12}}>
               <div style={{color:"#c0a070",fontSize:12,fontWeight:700,marginBottom:10}}>{label}</div>
@@ -522,14 +720,14 @@ function App(){
       );
       case 5:return(
         <div>
-          <SectionHeader icon="💳" title="المصروفات الشهرية" sub="جميع نفقاتك الشهرية"/>
-          <div style={{color:"#C9A84C",fontSize:11,marginBottom:10,fontWeight:700}}>◆ المصروفات الثابتة</div>
+          <SectionHeader icon="💳" title={L.expTitle} sub={L.expSub}/>
+          <div style={{color:"#C9A84C",fontSize:11,marginBottom:10,fontWeight:700}}>{L.fixedLabel}</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0 12px"}}>
             {[["housing","السكن"],["utilities","الكهرباء والماء"],["insurance","التأمين"],["school","المدرسة"],["internet","الإنترنت"],["transport","المواصلات"]].map(([k,l])=>(
               <Input key={k} label={l} value={expenses[k]} onChange={v=>setExpenses({...expenses,[k]:v})}/>
             ))}
           </div>
-          <div style={{color:"#C9A84C",fontSize:11,marginBottom:10,fontWeight:700}}>◆ المصروفات المتغيرة</div>
+          <div style={{color:"#C9A84C",fontSize:11,marginBottom:10,fontWeight:700}}>{L.varLabel}</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0 12px"}}>
             {[["food","الطعام"],["entertainment","الترفيه"],["shopping","التسوق"],["restaurants","المطاعم"],["travel","السفر"],["misc","متنوعات"]].map(([k,l])=>(
               <Input key={k} label={l} value={expenses[k]} onChange={v=>setExpenses({...expenses,[k]:v})}/>
@@ -539,7 +737,7 @@ function App(){
       );
       case 6:return(
         <div>
-          <SectionHeader icon="📊" title="ملف المخاطر" sub="حدد مستوى تحملك للمخاطر"/>
+          <SectionHeader icon="📊" title={L.riskTitle} sub={L.riskSub}/>
           {RISK_Q.map((q,qi)=>(
             <div key={q.id} style={{marginBottom:16,background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:12,padding:14}}>
               <div style={{color:"#c8e0c8",fontSize:13,marginBottom:10,fontWeight:700}}>{qi+1}. {q.q}</div>
@@ -563,7 +761,7 @@ function App(){
       );
       case 7:return(
         <div>
-          <SectionHeader icon="🎯" title="الأهداف المالية" sub="حدد أهدافك وسنحسب القسط الشهري"/>
+          <SectionHeader icon="🎯" title={L.goalsTitle} sub={L.goalsSub}/>
           <div style={{background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:12,padding:16,marginBottom:18}}>
             <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:12}}>
               {GOAL_TYPES.map(g=>(
@@ -597,7 +795,7 @@ function App(){
               </div>
             );
           })}
-          {goals.length===0&&<div style={{color:"#4a6a4a",textAlign:"center",fontSize:12,padding:20}}>لم تضف أهدافاً بعد</div>}
+          {goals.length===0&&<div style={{color:"#4a6a4a",textAlign:"center",fontSize:12,padding:20}}>{L.noGoals}</div>}
         </div>
       );
       case 8:return <DiagnosisPage metrics={metrics} goals={goals} projYears={projYears} setProjYears={setProjYears}/>;
@@ -613,7 +811,7 @@ function App(){
           <span style={{fontSize:22}}>🏥</span>
           <div>
             <div style={{fontSize:14,fontWeight:900,color:"#C9A84C"}}>Cash Clinic Pro</div>
-            <div style={{fontSize:9,color:"#4a6a4a"}}>شخّص · عالج · نمّ ثروتك</div>
+            <div style={{fontSize:9,color:"#4a6a4a"}}>{L.tagline}</div>
           </div>
         </div>
         {step>0&&step<8&&(
@@ -632,7 +830,7 @@ function App(){
           {STEPS.slice(1,8).map((s,i)=>(
             <button key={s.id} onClick={()=>setStep(i+1)}
               style={{fontSize:10,padding:"4px 9px",borderRadius:20,cursor:"pointer",whiteSpace:"nowrap",background:step===i+1?"#C9A84C22":"#0f1f0f",border:`1px solid ${step===i+1?"#C9A84C":"#1a2a1a"}`,color:step===i+1?"#C9A84C":step>i+1?"#6aaa6a":"#4a6a4a",fontWeight:step===i+1?700:400,fontFamily:"'Noto Sans Arabic','Segoe UI',sans-serif"}}>
-              {step>i+1?"✓ ":""}{s.label}
+              {step>i+1?"✓ ":""}{getStepLabel(i+1)}
             </button>
           ))}
         </div>
@@ -652,7 +850,7 @@ function App(){
             </button>
           )}
           <button onClick={goNext} style={{flex:2,background:"linear-gradient(135deg,#C9A84C,#a8892e)",border:"none",borderRadius:12,padding:"13px 0",color:"#0a0f0a",fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:"'Noto Sans Arabic','Segoe UI',sans-serif"}}>
-            {step===7?"🔬 عرض التشخيص الكامل":step===0?"ابدأ التشخيص ←":"التالي ←"}
+            {step===7?L.diagBtn:step===0?L.startBtn:L.nextBtn}
           </button>
         </div>
       )}
