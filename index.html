@@ -2,665 +2,868 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Cash Clinic">
-<meta name="theme-color" content="#070e07">
-<title>Cash Clinic Pro</title>
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23070e07' rx='20'/><text y='.9em' font-size='80'>🏥</text></svg>">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Cash Clinic Pro — شخّص وضعك المالي</title>
+<meta name="description" content="نظام مالي احترافي يحلل ديونك، تدفقك النقدي، ومدى جاهزيتك للاستثمار. احصل عليه مقابل 19.99 دولار فقط.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#070e07;font-family:'Noto Sans Arabic','Segoe UI',sans-serif;color:#e8f0e8;direction:rtl;overflow-x:hidden}
-  ::-webkit-scrollbar{width:3px}
-  ::-webkit-scrollbar-thumb{background:#C9A84C44;border-radius:4px}
-  select option{background:#0f1f0f}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-  .fade{animation:fadeIn .35s ease}
-  input,select{font-family:'Noto Sans Arabic','Segoe UI',sans-serif}
+:root {
+  --gold: #C9A84C;
+  --gold2: #e8c96a;
+  --gold-dim: #8a6a20;
+  --green-dark: #070e07;
+  --green-mid: #0d1a0d;
+  --green-card: #0f1f0f;
+  --green-border: #1e3a1e;
+  --text: #e8f0e8;
+  --text-dim: #8aad8a;
+  --text-muted: #4a6a4a;
+  --red: #F44336;
+  --green-ok: #4CAF50;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans Arabic','Segoe UI',sans-serif;
+  background:var(--green-dark);
+  color:var(--text);
+  direction:rtl;
+  overflow-x:hidden;
+}
+/* NOISE TEXTURE */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4;
+}
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg,rgba(7,14,7,.95) 0%,transparent 100%);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(201,168,76,.12);
+}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-icon{font-size:24px}
+.nav-logo-text{font-size:15px;font-weight:900;color:var(--gold);letter-spacing:.5px}
+.nav-logo-sub{font-size:9px;color:var(--text-muted)}
+.nav-cta{
+  background:var(--gold);color:#060c06;
+  border:none;border-radius:50px;
+  padding:9px 20px;font-size:12px;font-weight:900;
+  cursor:pointer;font-family:inherit;
+  transition:transform .2s,box-shadow .2s;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.35)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:100px 20px 60px;
+  position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;top:20%;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-glow2{
+  position:absolute;top:60%;left:20%;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(76,175,80,.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);
+  border-radius:50px;padding:6px 16px;
+  font-size:11px;color:var(--gold);font-weight:700;
+  margin-bottom:28px;
+  animation:fadeDown .8s ease both;
+}
+.hero-title{
+  font-family:'Noto Sans Arabic',sans-serif;
+  font-size:clamp(28px,6vw,52px);
+  font-weight:900;
+  line-height:1.3;
+  color:var(--text);
+  max-width:780px;
+  margin-bottom:12px;
+  animation:fadeDown .8s .1s ease both;
+}
+.hero-title span{color:var(--gold)}
+.hero-sub{
+  font-size:clamp(14px,2.5vw,18px);
+  color:var(--text-dim);
+  max-width:600px;
+  line-height:1.8;
+  margin-bottom:40px;
+  animation:fadeDown .8s .2s ease both;
+}
+.hero-btns{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  animation:fadeDown .8s .3s ease both;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--gold),#a8892e);
+  border:none;border-radius:50px;
+  padding:16px 40px;
+  font-size:16px;font-weight:900;color:#060c06;
+  cursor:pointer;font-family:inherit;
+  transition:transform .2s,box-shadow .3s;
+  box-shadow:0 4px 32px rgba(201,168,76,.3);
+  letter-spacing:.3px;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(201,168,76,.45)}
+.btn-secondary{
+  background:transparent;
+  border:1px solid var(--green-border);
+  border-radius:50px;padding:14px 32px;
+  font-size:14px;font-weight:700;color:var(--text-dim);
+  cursor:pointer;font-family:inherit;
+  transition:border-color .2s,color .2s;
+}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.hero-price{
+  font-size:12px;color:var(--text-muted);margin-top:8px;
+}
+.hero-price span{color:var(--gold);font-weight:700}
+
+/* STATS BAR */
+.stats-bar{
+  background:rgba(13,26,13,.8);
+  border-top:1px solid var(--green-border);
+  border-bottom:1px solid var(--green-border);
+  padding:24px 20px;
+  display:flex;justify-content:center;flex-wrap:wrap;gap:8px;
+  position:relative;z-index:1;
+}
+.stat-item{
+  text-align:center;padding:12px 24px;
+  border-left:1px solid var(--green-border);
+}
+.stat-item:last-child{border-left:none}
+.stat-num{font-size:26px;font-weight:900;color:var(--gold)}
+.stat-label{font-size:11px;color:var(--text-muted);margin-top:2px}
+
+/* PAIN SECTION */
+.section{padding:80px 20px;max-width:900px;margin:0 auto;position:relative;z-index:1}
+.section-tag{
+  display:inline-block;
+  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);
+  border-radius:4px;padding:4px 12px;
+  font-size:11px;color:var(--gold);font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:16px;
+}
+.section-title{
+  font-size:clamp(22px,4vw,36px);font-weight:900;
+  line-height:1.35;margin-bottom:12px;
+}
+.section-sub{font-size:14px;color:var(--text-dim);line-height:1.8;max-width:600px}
+
+/* PAIN CARDS */
+.pain-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:16px;margin-top:40px;
+}
+.pain-card{
+  background:linear-gradient(135deg,#120808,#1a0c0c);
+  border:1px solid rgba(244,67,54,.15);
+  border-radius:16px;padding:24px;
+  transition:transform .25s,border-color .25s;
+}
+.pain-card:hover{transform:translateY(-4px);border-color:rgba(244,67,54,.35)}
+.pain-icon{font-size:28px;margin-bottom:12px}
+.pain-title{font-size:15px;font-weight:800;color:#ef9a9a;margin-bottom:8px}
+.pain-desc{font-size:12px;color:#7a5a5a;line-height:1.7}
+
+/* SOLUTION */
+.solution-wrap{
+  background:linear-gradient(135deg,#0a1a0a,#0f2a0f);
+  border:1px solid var(--green-border);
+  border-radius:24px;padding:40px;margin-top:40px;
+}
+.features-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;margin-top:32px;
+}
+.feature-item{
+  background:rgba(7,14,7,.6);
+  border:1px solid var(--green-border);
+  border-radius:12px;padding:18px;
+  display:flex;gap:12px;align-items:flex-start;
+  transition:border-color .2s,transform .2s;
+}
+.feature-item:hover{border-color:rgba(201,168,76,.4);transform:translateY(-2px)}
+.feature-check{
+  width:24px;height:24px;border-radius:50%;
+  background:rgba(76,175,80,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;margin-top:2px;
+}
+.feature-text{font-size:13px;color:var(--text-dim);line-height:1.6}
+.feature-text strong{color:var(--text);display:block;margin-bottom:3px;font-size:14px}
+
+/* HOW IT WORKS */
+.steps-wrap{margin-top:48px}
+.step-row{
+  display:flex;gap:20px;align-items:flex-start;
+  margin-bottom:24px;padding-bottom:24px;
+  border-bottom:1px solid var(--green-border);
+}
+.step-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.step-num{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#a8892e);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;color:#060c06;flex-shrink:0;
+}
+.step-content{}
+.step-title{font-size:15px;font-weight:800;margin-bottom:4px}
+.step-desc{font-size:12px;color:var(--text-dim);line-height:1.7}
+
+/* METRICS PREVIEW */
+.metrics-preview{
+  background:var(--green-card);
+  border:1px solid var(--green-border);
+  border-radius:20px;padding:28px;margin-top:40px;
+  position:relative;overflow:hidden;
+}
+.metrics-preview::before{
+  content:'';position:absolute;top:-40px;left:-40px;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(201,168,76,.06),transparent);
+  pointer-events:none;
+}
+.metrics-title{font-size:13px;color:var(--text-muted);margin-bottom:20px;font-weight:700;letter-spacing:.5px}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.metric-box{
+  background:rgba(7,14,7,.8);
+  border:1px solid var(--green-border);
+  border-radius:12px;padding:14px;text-align:center;
+}
+.metric-val{font-size:22px;font-weight:900}
+.metric-lbl{font-size:10px;color:var(--text-muted);margin-top:3px}
+.bar-wrap{margin-bottom:10px}
+.bar-label-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.bar-label-row span:first-child{font-size:11px;color:var(--text-dim)}
+.bar-label-row span:last-child{font-size:11px;font-weight:700}
+.bar-track{background:#1a2a1a;border-radius:4px;height:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.locked-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(7,14,7,.97) 70%);
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding-bottom:28px;border-radius:20px;
+}
+.locked-msg{
+  text-align:center;
+  background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);
+  border-radius:12px;padding:16px 24px;
+}
+.locked-msg div:first-child{font-size:20px;margin-bottom:6px}
+.locked-msg div:nth-child(2){font-size:14px;font-weight:800;color:var(--gold);margin-bottom:4px}
+.locked-msg div:last-child{font-size:11px;color:var(--text-muted)}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:32px}
+.testi-card{
+  background:var(--green-card);
+  border:1px solid var(--green-border);
+  border-radius:16px;padding:24px;
+  transition:transform .25s;
+}
+.testi-card:hover{transform:translateY(-4px)}
+.testi-stars{color:var(--gold);font-size:13px;margin-bottom:10px;letter-spacing:2px}
+.testi-text{font-size:13px;color:var(--text-dim);line-height:1.8;margin-bottom:14px}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:#060c06;
+}
+.testi-name{font-size:13px;font-weight:700}
+.testi-role{font-size:10px;color:var(--text-muted)}
+
+/* PRICING */
+.pricing-card{
+  background:linear-gradient(135deg,#0a1a0a,#142014);
+  border:2px solid rgba(201,168,76,.3);
+  border-radius:28px;padding:44px;
+  max-width:520px;margin:40px auto 0;
+  text-align:center;position:relative;overflow:hidden;
+}
+.pricing-card::before{
+  content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);
+  pointer-events:none;
+}
+.pricing-badge{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--gold),#a8892e);
+  color:#060c06;border-radius:50px;
+  padding:5px 18px;font-size:11px;font-weight:900;
+  margin-bottom:20px;
+}
+.pricing-name{font-size:22px;font-weight:900;margin-bottom:8px}
+.pricing-price{
+  font-size:56px;font-weight:900;color:var(--gold);
+  line-height:1;margin-bottom:4px;
+}
+.pricing-price sup{font-size:22px;vertical-align:top;margin-top:10px;display:inline-block}
+.pricing-period{font-size:12px;color:var(--text-muted);margin-bottom:28px}
+.pricing-list{list-style:none;text-align:right;margin-bottom:32px}
+.pricing-list li{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--green-border);
+  font-size:13px;color:var(--text-dim);
+}
+.pricing-list li:last-child{border-bottom:none}
+.pricing-list li::before{content:'✓';color:var(--green-ok);font-weight:900;font-size:14px}
+.pricing-guarantee{
+  margin-top:20px;font-size:11px;color:var(--text-muted);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+
+/* FAQ */
+.faq-wrap{margin-top:32px}
+.faq-item{
+  border-bottom:1px solid var(--green-border);
+  padding:20px 0;cursor:pointer;
+}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:14px;font-weight:700;color:var(--text);
+}
+.faq-q span{color:var(--gold);font-size:18px;font-weight:300;transition:transform .3s}
+.faq-a{
+  font-size:12px;color:var(--text-dim);line-height:1.8;
+  max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;
+}
+.faq-item.open .faq-a{max-height:200px;padding-top:12px}
+.faq-item.open .faq-q span{transform:rotate(45deg)}
+
+/* FOOTER */
+footer{
+  background:var(--green-mid);
+  border-top:1px solid var(--green-border);
+  padding:40px 20px;text-align:center;
+  position:relative;z-index:1;
+}
+.footer-logo{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:8px}
+.footer-tagline{font-size:12px;color:var(--text-muted);margin-bottom:20px}
+.footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+.footer-links a{font-size:12px;color:var(--text-muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;color:#2a3a2a}
+
+/* FLOATING CTA */
+.float-cta{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  z-index:90;
+  background:linear-gradient(135deg,var(--gold),#a8892e);
+  border:none;border-radius:50px;
+  padding:14px 32px;
+  font-size:14px;font-weight:900;color:#060c06;
+  cursor:pointer;font-family:inherit;
+  box-shadow:0 8px 40px rgba(201,168,76,.4);
+  transition:transform .2s,box-shadow .2s;
+  white-space:nowrap;
+  animation:floatUp .6s 1s ease both;
+}
+.float-cta:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 16px 48px rgba(201,168,76,.5)}
+
+/* SECURITY BANNER */
+.security-bar{
+  background:rgba(13,26,13,.6);
+  border:1px solid var(--green-border);
+  border-radius:12px;padding:14px 20px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:11px;color:var(--text-muted);
+  margin-top:16px;flex-wrap:wrap;gap:16px;
+}
+.security-item{display:flex;align-items:center;gap:6px}
+
+/* VIDEO PLACEHOLDER */
+.video-wrap{
+  background:var(--green-card);
+  border:1px solid var(--green-border);
+  border-radius:20px;
+  aspect-ratio:16/9;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  margin-top:40px;position:relative;overflow:hidden;
+  max-width:700px;margin-left:auto;margin-right:auto;
+}
+.video-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.04),rgba(76,175,80,.04));
+}
+.play-btn{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#a8892e);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;cursor:pointer;
+  box-shadow:0 8px 32px rgba(201,168,76,.35);
+  transition:transform .2s;margin-bottom:14px;
+}
+.play-btn:hover{transform:scale(1.08)}
+.video-label{font-size:13px;color:var(--text-dim)}
+.video-duration{font-size:11px;color:var(--text-muted);margin-top:4px}
+
+/* ANIM */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
+@keyframes floatUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .stats-bar{flex-direction:column;align-items:center}
+  .stat-item{border-left:none;border-bottom:1px solid var(--green-border);width:100%;padding:12px}
+  .stat-item:last-child{border-bottom:none}
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-card{padding:28px 20px}
+  .pricing-price{font-size:44px}
+}
+
+.divider{
+  height:1px;background:linear-gradient(90deg,transparent,var(--green-border),transparent);
+  margin:0;position:relative;z-index:1;
+}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const {useState,useEffect,useRef}=React;
 
-const STEPS=[
-  {id:"welcome",label:"مرحباً"},
-  {id:"personal",label:"الشخصية"},
-  {id:"income",label:"الدخل"},
-  {id:"assets",label:"الأصول"},
-  {id:"liabilities",label:"الديون"},
-  {id:"expenses",label:"المصروفات"},
-  {id:"risk",label:"المخاطر"},
-  {id:"goals",label:"الأهداف"},
-  {id:"diagnosis",label:"التشخيص"},
-];
-
-const RISK_Q=[
-  {id:"exp",q:"ما مدى خبرتك في الاستثمار؟",opts:["لا خبرة","مبتدئ","متوسط","خبير"],scores:[0,25,65,100]},
-  {id:"loss",q:"إذا انخفضت محفظتك 20%، ماذا ستفعل؟",opts:["أبيع كل شيء","أبيع جزءاً","أنتظر","أشتري أكثر"],scores:[0,25,65,100]},
-  {id:"horizon",q:"ما أفق استثمارك الزمني؟",opts:["أقل من سنة","1-3 سنوات","3-7 سنوات","أكثر من 7 سنوات"],scores:[0,25,65,100]},
-  {id:"stability",q:"مدى استقرار دخلك الشهري؟",opts:["غير مستقر","متذبذب نسبياً","مستقر","مستقر جداً"],scores:[0,25,65,100]},
-  {id:"goal",q:"هدفك الأساسي من الاستثمار؟",opts:["حماية رأس المال","دخل ثابت","نمو متوازن","نمو مرتفع"],scores:[0,25,65,100]},
-];
-
-const GOAL_TYPES=[
-  {id:"retirement",label:"التقاعد",icon:"🏖️"},
-  {id:"house",label:"شراء منزل",icon:"🏠"},
-  {id:"education",label:"التعليم",icon:"🎓"},
-  {id:"car",label:"شراء سيارة",icon:"🚗"},
-  {id:"emergency",label:"طوارئ",icon:"🛡️"},
-  {id:"wealth",label:"بناء الثروة",icon:"💎"},
-];
-
-function fmt(n){if(!n||isNaN(n))return"0";return Math.abs(n).toLocaleString("ar-BH",{maximumFractionDigits:0});}
-function fv(m,y,r=0.08){const n=y*12,rt=r/12;return rt===0?m*n:m*((Math.pow(1+rt,n)-1)/rt);}
-
-function calcMetrics(data){
-  const{income,assets,liabilities,expenses,risk}=data;
-  const p=(v)=>parseFloat(v)||0;
-  const totalIncome=p(income.salary)+p(income.freelance)+p(income.rental)+p(income.other);
-  const totalAssets=p(assets.cash)+p(assets.bank)+p(assets.gold)+p(assets.realestate)+p(assets.vehicles)+p(assets.stocks)+p(assets.crypto)+p(assets.other);
-  const liquidAssets=p(assets.cash)+p(assets.bank);
-  const totalLiabilities=p(liabilities.personal)+p(liabilities.credit)+p(liabilities.car)+p(liabilities.mortgage)+p(liabilities.family)+p(liabilities.other);
-  const monthlyDebt=p(liabilities.personalPay)+p(liabilities.creditPay)+p(liabilities.carPay)+p(liabilities.mortgagePay);
-  const fixedExp=p(expenses.housing)+p(expenses.utilities)+p(expenses.insurance)+p(expenses.school)+p(expenses.internet)+p(expenses.transport);
-  const varExp=p(expenses.food)+p(expenses.entertainment)+p(expenses.shopping)+p(expenses.restaurants)+p(expenses.travel)+p(expenses.misc);
-  const totalExpenses=fixedExp+varExp+monthlyDebt;
-  const cashFlow=totalIncome-totalExpenses;
-  const savings=Math.max(0,cashFlow);
-  const savingsRate=totalIncome>0?(savings/totalIncome)*100:0;
-  const debtRatio=totalIncome>0?(monthlyDebt/totalIncome)*100:0;
-  const emergencyMonths=totalExpenses>0?liquidAssets/totalExpenses:0;
-  const netWorth=totalAssets-totalLiabilities;
-  let riskScore=0;
-  if(risk){RISK_Q.forEach(q=>{const a=risk[q.id];if(a!==undefined)riskScore+=q.scores[a];});riskScore=RISK_Q.length>0?riskScore/RISK_Q.length:0;}
-  let readiness=0;
-  if(debtRatio<=20)readiness+=25;else if(debtRatio<=35)readiness+=18;else if(debtRatio<=50)readiness+=10;else if(debtRatio<=70)readiness+=4;
-  if(cashFlow>totalIncome*.3)readiness+=20;else if(cashFlow>totalIncome*.15)readiness+=14;else if(cashFlow>0)readiness+=7;
-  if(emergencyMonths>=6)readiness+=25;else if(emergencyMonths>=3)readiness+=18;else if(emergencyMonths>=1)readiness+=8;
-  if(savingsRate>=20)readiness+=20;else if(savingsRate>=10)readiness+=13;else if(savingsRate>0)readiness+=6;
-  if(totalIncome>0)readiness+=10;
-  const healthScore=Math.round((readiness*.4)+(Math.max(0,Math.min(100,(cashFlow/(totalIncome||1))*200))*.2)+(Math.min(100,emergencyMonths*12)*.25)+(Math.min(100,100-debtRatio)*.15));
-  let riskProfile="محافظ";
-  if(riskScore>=80)riskProfile="عدواني";else if(riskScore>=65)riskProfile="نمو";else if(riskScore>=50)riskProfile="متوازن";else if(riskScore>=35)riskProfile="معتدل";
-  let allocation=null;
-  if(readiness>=60){
-    if(riskScore<35)allocation={equity:20,fixed:70,cash:10,label:"محافظ"};
-    else if(riskScore<50)allocation={equity:35,fixed:50,cash:15,label:"معتدل"};
-    else if(riskScore<65)allocation={equity:50,fixed:35,cash:15,label:"متوازن"};
-    else if(riskScore<80)allocation={equity:65,fixed:25,cash:10,label:"نمو"};
-    else allocation={equity:80,fixed:10,cash:10,label:"عدواني"};
-  }
-  return{totalIncome,totalAssets,liquidAssets,totalLiabilities,monthlyDebt,fixedExp,varExp,totalExpenses,cashFlow,savings,savingsRate,debtRatio,emergencyMonths,netWorth,readiness,healthScore,riskScore,riskProfile,allocation};
-}
-
-function ScoreRing({score,size=120,label,color="#C9A84C"}){
-  const r=(size-16)/2,circ=2*Math.PI*r,dash=(score/100)*circ;
-  return(
-    <div style={{textAlign:"center",display:"inline-block"}}>
-      <svg width={size} height={size} style={{transform:"rotate(-90deg)"}}>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#1a2a1a" strokeWidth={8}/>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={8} strokeDasharray={`${dash} ${circ}`} strokeLinecap="round" style={{transition:"stroke-dasharray 1.2s ease"}}/>
-      </svg>
-      <div style={{marginTop:-(size/2+10),position:"relative",top:size/2-18}}>
-        <div style={{fontSize:size>100?26:18,fontWeight:900,color}}>{score}</div>
-        <div style={{fontSize:10,color:"#8aad8a",marginTop:2}}>{label}</div>
-      </div>
-    </div>
-  );
-}
-
-function Input({label,value,onChange,prefix="BD",type="number",hint}){
-  return(
-    <div style={{marginBottom:14}}>
-      <label style={{display:"block",fontSize:12,color:"#8aad8a",marginBottom:5,fontWeight:600}}>{label}</label>
-      <div style={{position:"relative"}}>
-        <input type={type} value={value} onChange={e=>onChange(e.target.value)}
-          style={{width:"100%",background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:8,padding:"10px 12px",paddingRight:prefix?50:12,color:"#e8f0e8",fontSize:14,outline:"none",boxSizing:"border-box",direction:"ltr",textAlign:"right"}}
-          onFocus={e=>e.target.style.borderColor="#C9A84C"} onBlur={e=>e.target.style.borderColor="#2a4a2a"}/>
-        {prefix&&<span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",color:"#C9A84C",fontSize:11,fontWeight:700}}>{prefix}</span>}
-      </div>
-      {hint&&<div style={{fontSize:10,color:"#4a6a4a",marginTop:3}}>{hint}</div>}
-    </div>
-  );
-}
-
-function Sel({label,value,onChange,options}){
-  return(
-    <div style={{marginBottom:14}}>
-      <label style={{display:"block",fontSize:12,color:"#8aad8a",marginBottom:5,fontWeight:600}}>{label}</label>
-      <select value={value} onChange={e=>onChange(e.target.value)}
-        style={{width:"100%",background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:8,padding:"10px 12px",color:"#e8f0e8",fontSize:14,outline:"none",boxSizing:"border-box"}}>
-        {options.map(o=><option key={o.v} value={o.v}>{o.l}</option>)}
-      </select>
-    </div>
-  );
-}
-
-function Bar({label,pct,color="#C9A84C"}){
-  return(
-    <div style={{marginBottom:10}}>
-      <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-        <span style={{fontSize:12,color:"#8aad8a"}}>{label}</span>
-        <span style={{fontSize:12,color,fontWeight:700}}>{Math.round(pct)}%</span>
-      </div>
-      <div style={{background:"#1a2a1a",borderRadius:4,height:7,overflow:"hidden"}}>
-        <div style={{width:`${Math.min(100,Math.max(0,pct))}%`,background:color,height:"100%",borderRadius:4,transition:"width 1s ease"}}/>
-      </div>
-    </div>
-  );
-}
-
-function Card({label,value,sub,color="#C9A84C",icon}){
-  return(
-    <div style={{background:"linear-gradient(135deg,#0f1f0f,#162616)",border:`1px solid ${color}33`,borderRadius:12,padding:"16px 14px"}}>
-      <div style={{fontSize:18,marginBottom:4}}>{icon}</div>
-      <div style={{fontSize:20,fontWeight:900,color}}>{value}</div>
-      <div style={{fontSize:11,color:"#8aad8a",marginTop:2}}>{label}</div>
-      {sub&&<div style={{fontSize:10,color:"#4a6a4a",marginTop:2}}>{sub}</div>}
-    </div>
-  );
-}
-
-function SectionHeader({icon,title,sub}){
-  return(
-    <div style={{marginBottom:22}}>
-      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:3}}>
-        <span style={{fontSize:24}}>{icon}</span>
-        <span style={{fontSize:19,fontWeight:900,color:"#e8f0e8"}}>{title}</span>
-      </div>
-      <div style={{fontSize:12,color:"#6a8a6a",marginRight:34}}>{sub}</div>
-    </div>
-  );
-}
-
-function AIDoctor({metrics}){
-  const[advice,setAdvice]=useState(null);
-  const[loading,setLoading]=useState(false);
-  const[asked,setAsked]=useState(false);
-  const m=metrics;
-  const ask=async()=>{
-    setLoading(true);setAsked(true);
-    try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:1000,
-          system:`أنت "الدكتور المالي" في منصة Cash Clinic Pro. تحدث دائماً بالعربية الخليجية الواضحة. أنت خبير مالي يشخّص الوضع المالي ويقدم توصيات عملية. كن مباشراً واحترافياً. قدّم 4-5 توصيات مرقّمة مع رموز تعبيرية. أضف في النهاية "⭐ الخطوة الأولى الأهم" كتوصية مميزة.`,
-          messages:[{role:"user",content:`بيانات المريض المالي:
-- الدخل الشهري: BD ${fmt(m.totalIncome)}
-- التدفق النقدي: BD ${fmt(m.cashFlow)} (${m.cashFlow>=0?"إيجابي":"سلبي"})
-- نسبة الديون: ${Math.round(m.debtRatio)}%
-- أشهر الطوارئ: ${m.emergencyMonths.toFixed(1)}
-- معدل الادخار: ${Math.round(m.savingsRate)}%
-- جاهزية الاستثمار: ${Math.round(m.readiness)}/100
-- الصحة المالية: ${m.healthScore}/100
-- صافي الثروة: BD ${fmt(m.netWorth)}
-- ملف المخاطر: ${m.riskProfile}
-قدّم تشخيصاً وتوصيات مخصصة.`}]
-        })
-      });
-      const d=await res.json();
-      setAdvice(d.content?.[0]?.text||"تعذر الحصول على التوصيات.");
-    }catch{setAdvice("⚠️ خطأ في الاتصال. يرجى المحاولة مرة أخرى.");}
-    setLoading(false);
-  };
-  return(
-    <div style={{background:"linear-gradient(135deg,#0a1a0a,#142014)",border:"1px solid #C9A84C44",borderRadius:16,padding:20,marginTop:20}}>
-      <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
-        <div style={{fontSize:34}}>🩺</div>
-        <div>
-          <div style={{fontSize:16,fontWeight:900,color:"#C9A84C"}}>الدكتور المالي</div>
-          <div style={{fontSize:11,color:"#6a8a6a"}}>تشخيص بالذكاء الاصطناعي</div>
-        </div>
-      </div>
-      {!asked?(
-        <button onClick={ask} style={{background:"linear-gradient(135deg,#C9A84C,#a8892e)",border:"none",borderRadius:10,padding:"13px 0",color:"#0a0f0a",fontWeight:900,fontSize:14,cursor:"pointer",width:"100%"}}>
-          احصل على تشخيصك المالي الآن 🔬
-        </button>
-      ):loading?(
-        <div style={{textAlign:"center",padding:24}}>
-          <div style={{fontSize:30,animation:"spin 1s linear infinite",display:"inline-block"}}>⚕️</div>
-          <div style={{color:"#8aad8a",marginTop:10,fontSize:13}}>الدكتور يحلل وضعك المالي...</div>
-        </div>
-      ):(
-        <div>
-          <div style={{background:"#0d1a0d",borderRadius:10,padding:16,color:"#c8e0c8",fontSize:13,lineHeight:2.1,whiteSpace:"pre-wrap"}}>{advice}</div>
-          <button onClick={()=>{setAdvice(null);setAsked(false);}} style={{background:"transparent",border:"1px solid #2a4a2a",borderRadius:8,padding:"8px 0",color:"#6a8a6a",fontSize:12,cursor:"pointer",width:"100%",marginTop:10}}>
-            🔄 إعادة التشخيص
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function DiagnosisPage({metrics,goals,setProjYears,projYears}){
-  const m=metrics;
-  const hColor=m.healthScore>=80?"#4CAF50":m.healthScore>=60?"#8BC34A":m.healthScore>=40?"#FFC107":"#F44336";
-  const drColor=m.debtRatio<=20?"#4CAF50":m.debtRatio<=35?"#8BC34A":m.debtRatio<=50?"#FFC107":m.debtRatio<=70?"#FF9800":"#F44336";
-  const emColor=m.emergencyMonths>=6?"#4CAF50":m.emergencyMonths>=3?"#FFC107":"#F44336";
-  const srColor=m.savingsRate>=20?"#4CAF50":m.savingsRate>=10?"#FFC107":"#F44336";
-  const rcColor=m.readiness>=80?"#4CAF50":m.readiness>=60?"#8BC34A":m.readiness>=40?"#FFC107":"#F44336";
-  const cfColor=m.cashFlow>=0?"#4CAF50":"#F44336";
-  const hLabel=m.healthScore>=80?"ممتاز":m.healthScore>=60?"جيد":m.healthScore>=40?"متوسط":m.healthScore>=20?"ضعيف":"حرج";
-  const drLabel=m.debtRatio<=20?"ممتاز":m.debtRatio<=35?"جيد":m.debtRatio<=50?"تحذير":m.debtRatio<=70?"خطر مرتفع":"حرج";
-  const rLabel=m.readiness>=80?"مستوى المستثمر":m.readiness>=60?"جاهز للاستثمار":m.readiness>=40?"مرحلة التحضير":"غير جاهز بعد";
-  const projData=[3,5,10,20,30].map(y=>({y,val:fv(m.savings||0,y)}));
-  const projMax=Math.max(...projData.map(d=>d.val),1);
-  const selProj=projData.find(d=>d.y===projYears)||projData[2];
-
-  return(
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-logo-icon">🏥</span>
     <div>
-      {/* Hero */}
-      <div style={{background:"linear-gradient(135deg,#0a2a0a,#162616)",border:"1px solid #C9A84C33",borderRadius:20,padding:22,marginBottom:16,textAlign:"center"}}>
-        <div style={{fontSize:12,color:"#6a8a6a",marginBottom:14}}>تقرير الصحة المالية الشامل</div>
-        <ScoreRing score={m.healthScore} size={130} label="الصحة المالية" color={hColor}/>
-        <div style={{marginTop:10}}>
-          <span style={{background:hColor+"22",border:`1px solid ${hColor}66`,color:hColor,borderRadius:20,padding:"3px 14px",fontSize:12,fontWeight:700}}>{hLabel}</span>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginTop:18}}>
-          {[{v:`${Math.round(m.readiness)}`,l:"جاهزية الاستثمار",c:rcColor},{v:`${Math.round(m.debtRatio)}%`,l:"نسبة الديون",c:drColor},{v:m.emergencyMonths.toFixed(1),l:"أشهر طوارئ",c:emColor}].map((x,i)=>(
-            <div key={i} style={{textAlign:"center"}}>
-              <div style={{fontSize:20,fontWeight:900,color:x.c}}>{x.v}</div>
-              <div style={{fontSize:10,color:"#6a8a6a",marginTop:2}}>{x.l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <div class="nav-logo-text">Cash Clinic Pro</div>
+      <div class="nav-logo-sub">شخّص · عالج · نمّ ثروتك</div>
+    </div>
+  </div>
+  <button class="nav-cta" onclick="window.open('https://dropstoreme.gumroad.com/l/cashclinicpro','_blank')">
+    احصل عليه — $19.99
+  </button>
+</nav>
 
-      {/* Net Worth */}
-      <div style={{background:m.netWorth>=0?"linear-gradient(135deg,#0a2a0a,#162616)":"linear-gradient(135deg,#2a0a0a,#1a0808)",border:`1px solid ${m.netWorth>=0?"#4CAF5044":"#F4433644"}`,borderRadius:14,padding:16,marginBottom:14,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-badge">🏥 الطبيب المالي الشخصي · مدعوم بالذكاء الاصطناعي</div>
+  <h1 class="hero-title">
+    هل أنت <span>مستثمر</span>… أم <span style="color:#ef9a9a">مديون</span>؟<br>
+    اكتشف وضعك المالي الحقيقي
+  </h1>
+  <p class="hero-sub">
+    Cash Clinic Pro يشخّص دخلك، ديونك، مصروفاتك، وأصولك — ويعطيك تقريراً مالياً احترافياً خلال دقائق فقط.
+  </p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="window.open('https://dropstoreme.gumroad.com/l/cashclinicpro','_blank')">
+      ابدأ تشخيصك المالي الآن
+    </button>
+    <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+      شاهد المميزات أولاً ↓
+    </button>
+    <div class="hero-price">دفعة واحدة فقط · <span>$19.99</span> · وصول فوري</div>
+  </div>
+
+  <!-- Video Placeholder -->
+  <div class="video-wrap">
+    <div class="play-btn">▶</div>
+    <div class="video-label">شاهد Cash Clinic Pro في العمل</div>
+    <div class="video-duration">⏱ 60 ثانية فقط</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">+2,400</div>
+    <div class="stat-label">مستخدم نشط</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">4.9 ⭐</div>
+    <div class="stat-label">تقييم المستخدمين</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">9</div>
+    <div class="stat-label">أدوات تحليل مالي</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">دقائق</div>
+    <div class="stat-label">للحصول على تشخيصك</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PAIN SECTION -->
+<section class="section">
+  <div class="section-tag">المشكلة</div>
+  <h2 class="section-title">هل تعاني من هذه المشاكل؟</h2>
+  <p class="section-sub">ملايين الناس يعيشون هذه الضغوط المالية يومياً — بدون أي تشخيص أو خطة علاج واضحة.</p>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pain-icon">💸</div>
+      <div class="pain-title">الراتب يختفي</div>
+      <div class="pain-desc">ينزل الراتب ويختفي قبل نهاية الشهر دون أن تعرف أين ذهب.</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">⛓️</div>
+      <div class="pain-title">ديون بلا نهاية</div>
+      <div class="pain-desc">قروض وبطاقات ائتمانية تتراكم وتشعر أنك لن تتحرر منها أبداً.</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">😰</div>
+      <div class="pain-title">الخوف من الاستثمار</div>
+      <div class="pain-desc">تفكر بالاستثمار لكنك لا تعرف إن كان وضعك المالي مستعداً لذلك.</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🏦</div>
+      <div class="pain-title">لا ادخار</div>
+      <div class="pain-desc">تحاول الادخار لكن لا تعرف كم المبلغ الصحيح أو كيف تبدأ.</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">🆘</div>
+      <div class="pain-title">لا طوارئ</div>
+      <div class="pain-desc">أي مصروف غير متوقع يقلب ميزانيتك كاملاً.</div>
+    </div>
+    <div class="pain-card">
+      <div class="pain-icon">📉</div>
+      <div class="pain-title">لا خطة مالية</div>
+      <div class="pain-desc">تعيش من شهر لشهر بدون هدف أو رؤية واضحة لمستقبلك المالي.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-tag">الحل</div>
+  <h2 class="section-title">Cash Clinic Pro — <span style="color:var(--gold)">طبيبك المالي</span></h2>
+  <p class="section-sub">نظام تشخيص مالي شامل يحلل وضعك الكامل ويعطيك خطة عمل مخصصة — بدون مستشار مالي باهظ الثمن.</p>
+  <div class="solution-wrap">
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>تحليل التدفق النقدي</strong>اعرف أين يذهب كل ريال من دخلك</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>تشخيص الصحة المالية</strong>درجة واضحة من 100 لوضعك الكامل</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>خطة سداد الديون</strong>Snowball أو Avalanche — اختر طريقتك</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>جاهزية الاستثمار</strong>هل أنت مستعد؟ احصل على جواب واضح</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>ملف المخاطر</strong>توزيع استثماري مخصص حسب شخصيتك</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>إسقاطات الثروة</strong>شوف ثروتك بعد 5، 10، 20 سنة</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>خطة الأهداف</strong>احسب القسط الشهري لكل هدف مالي</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>الدكتور المالي AI</strong>توصيات مخصصة بالذكاء الاصطناعي</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-check">✓</div>
+        <div class="feature-text"><strong>واجهة عربية كاملة</strong>مصمم للسوق الخليجي بالكامل</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- METRICS PREVIEW -->
+<section class="section">
+  <div class="section-tag">معاينة النظام</div>
+  <h2 class="section-title">هكذا يبدو تقريرك المالي</h2>
+  <p class="section-sub">نموذج من التحليل الذي ستحصل عليه فور إدخال بياناتك.</p>
+
+  <div class="metrics-preview">
+    <div class="metrics-title">📊 لوحة الصحة المالية — نموذج توضيحي</div>
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <div class="metric-val" style="color:#4CAF50">74</div>
+        <div class="metric-lbl">الصحة المالية</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" style="color:#C9A84C">68</div>
+        <div class="metric-lbl">جاهزية الاستثمار</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" style="color:#8BC34A">22%</div>
+        <div class="metric-lbl">نسبة الديون</div>
+      </div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-label-row"><span>المصروفات الثابتة</span><span style="color:#E57373">38%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:38%;background:#E57373"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-label-row"><span>المصروفات المتغيرة</span><span style="color:#FF9800">24%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:24%;background:#FF9800"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-label-row"><span>نسبة الادخار</span><span style="color:#4CAF50">18%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:18%;background:#4CAF50"></div></div>
+    </div>
+    <div class="locked-overlay">
+      <div class="locked-msg">
+        <div>🔒</div>
+        <div>احصل على تقريرك المالي الكامل</div>
+        <div>أدخل بياناتك بعد الشراء للحصول على تحليل حقيقي لوضعك</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-tag">كيف يعمل</div>
+  <h2 class="section-title">من الشراء إلى التشخيص في 5 خطوات</h2>
+  <div class="steps-wrap">
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">اشتر Cash Clinic Pro — $19.99</div>
+        <div class="step-desc">دفعة واحدة فقط عبر Gumroad. يقبل جميع بطاقات الائتمان والـ PayPal.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">استلم رابط التحميل فوراً</div>
+        <div class="step-desc">بعد الدفع مباشرة، تصلك رسالة على بريدك مع رابط الوصول الكامل للنظام.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">افتح النظام على هاتفك أو جهازك</div>
+        <div class="step-desc">يعمل على أي جهاز بدون تثبيت. يمكن إضافته للشاشة الرئيسية كتطبيق.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">أدخل بياناتك المالية (10 دقائق)</div>
+        <div class="step-desc">دخلك، مصروفاتك، أصولك، وديونك — كلها في 8 خطوات واضحة.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">احصل على تشخيصك الكامل فوراً</div>
+        <div class="step-desc">تقرير مالي احترافي مع توصيات مخصصة من الذكاء الاصطناعي.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="section-tag">آراء العملاء</div>
+  <h2 class="section-title">ماذا قالوا عن Cash Clinic Pro</h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"أخيراً فهمت ليش ما أقدر أدخر! النظام كشف إن 34% من دخلي يروح على مصروفات ما أنتبه لها. غيّر طريقة تفكيري بالكامل."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">خ</div>
         <div>
-          <div style={{fontSize:11,color:"#8aad8a"}}>صافي الثروة</div>
-          <div style={{fontSize:24,fontWeight:900,color:m.netWorth>=0?"#4CAF50":"#F44336"}}>BD {fmt(m.netWorth)}</div>
-          <div style={{fontSize:10,color:"#4a6a4a",marginTop:2}}>أصول: BD {fmt(m.totalAssets)} | ديون: BD {fmt(m.totalLiabilities)}</div>
-        </div>
-        <div style={{fontSize:32}}>{m.netWorth>=0?"📈":"📉"}</div>
-      </div>
-
-      {/* Grid */}
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
-        <Card icon="💵" label="التدفق النقدي" value={`BD ${fmt(m.cashFlow)}`} sub={m.cashFlow>=0?"إيجابي ✓":"سلبي ✗"} color={cfColor}/>
-        <Card icon="⚖️" label="نسبة الديون" value={`${Math.round(m.debtRatio)}%`} sub={drLabel} color={drColor}/>
-        <Card icon="🛡️" label="صندوق الطوارئ" value={`${m.emergencyMonths.toFixed(1)} شهر`} sub={m.emergencyMonths>=6?"ممتاز":m.emergencyMonths>=3?"جيد":"ضعيف"} color={emColor}/>
-        <Card icon="💰" label="معدل الادخار" value={`${Math.round(m.savingsRate)}%`} sub={m.savingsRate>=20?"ممتاز":m.savingsRate>=10?"جيد":"ضعيف"} color={srColor}/>
-      </div>
-
-      {/* Cash Flow */}
-      <div style={{background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:14,padding:18,marginBottom:14}}>
-        <div style={{fontSize:13,fontWeight:800,color:"#C9A84C",marginBottom:14}}>💳 تحليل التدفق النقدي</div>
-        <Bar pct={m.totalIncome>0?(m.fixedExp/m.totalIncome)*100:0} label="مصروفات ثابتة" color="#E57373"/>
-        <Bar pct={m.totalIncome>0?(m.varExp/m.totalIncome)*100:0} label="مصروفات متغيرة" color="#FF9800"/>
-        <Bar pct={m.totalIncome>0?(m.monthlyDebt/m.totalIncome)*100:0} label="أقساط الديون" color="#F44336"/>
-        <Bar pct={Math.max(0,m.savingsRate)} label="نسبة الادخار" color="#4CAF50"/>
-        <div style={{display:"flex",justifyContent:"space-between",marginTop:12,paddingTop:10,borderTop:"1px solid #1a2a1a"}}>
-          <span style={{fontSize:11,color:"#8aad8a"}}>دخل: BD {fmt(m.totalIncome)}</span>
-          <span style={{fontSize:11,color:"#8aad8a"}}>مصروفات: BD {fmt(m.totalExpenses)}</span>
-        </div>
-      </div>
-
-      {/* Investment Readiness */}
-      <div style={{background:m.readiness>=60?"linear-gradient(135deg,#0a2a0a,#142014)":"linear-gradient(135deg,#1a1a0a,#141408)",border:`1px solid ${rcColor}44`,borderRadius:14,padding:18,marginBottom:14}}>
-        <div style={{fontSize:13,fontWeight:800,color:"#C9A84C",marginBottom:14}}>🎯 جاهزية الاستثمار</div>
-        <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:14}}>
-          <ScoreRing score={Math.round(m.readiness)} size={85} label="" color={rcColor}/>
-          <div style={{flex:1}}>
-            <span style={{background:rcColor+"22",border:`1px solid ${rcColor}66`,color:rcColor,borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700}}>{rLabel}</span>
-            <div style={{color:"#8aad8a",fontSize:12,marginTop:8,lineHeight:1.7}}>
-              {m.readiness<40?"ركّز على سداد الديون وبناء الطوارئ أولاً قبل الاستثمار.":m.readiness<60?"أنت في مرحلة التحضير، استمر في تحسين مؤشراتك.":m.readiness<80?"وضعك جيد، يمكنك البدء بالاستثمار بحذر.":"وضعك ممتاز! أنت مؤهل تماماً للاستثمار."}
-            </div>
-          </div>
-        </div>
-        {m.allocation&&(
-          <div>
-            <div style={{fontSize:12,color:"#8aad8a",marginBottom:8}}>التوزيع المقترح — {m.allocation.label}</div>
-            <Bar pct={m.allocation.equity} label="أسهم وصناديق" color="#4CAF50"/>
-            <Bar pct={m.allocation.fixed} label="دخل ثابت وصكوك" color="#2196F3"/>
-            <Bar pct={m.allocation.cash} label="نقد واحتياطي" color="#9E9E9E"/>
-          </div>
-        )}
-      </div>
-
-      {/* Projection */}
-      {m.savings>0&&(
-        <div style={{background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:14,padding:18,marginBottom:14}}>
-          <div style={{fontSize:13,fontWeight:800,color:"#C9A84C",marginBottom:4}}>📈 إسقاطات الثروة</div>
-          <div style={{fontSize:10,color:"#4a6a4a",marginBottom:12}}>BD {fmt(m.savings)}/شهر بعائد 8% سنوياً</div>
-          <div style={{display:"flex",gap:6,marginBottom:14}}>
-            {[3,5,10,20,30].map(y=>(
-              <button key={y} onClick={()=>setProjYears(y)} style={{flex:1,background:projYears===y?"#C9A84C22":"#0a150a",border:`1px solid ${projYears===y?"#C9A84C":"#1a2a1a"}`,borderRadius:8,padding:"6px 0",color:projYears===y?"#C9A84C":"#6a8a6a",fontSize:11,fontWeight:projYears===y?700:400,cursor:"pointer"}}>
-                {y}س
-              </button>
-            ))}
-          </div>
-          <div style={{display:"flex",alignItems:"flex-end",gap:4,height:70,marginBottom:10}}>
-            {projData.map(d=>(
-              <div key={d.y} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",height:"100%"}}>
-                <div style={{flex:1,display:"flex",alignItems:"flex-end",width:"100%"}}>
-                  <div style={{width:"100%",background:d.y===projYears?"#C9A84C":"#2a4a2a",borderRadius:"4px 4px 0 0",height:`${Math.max(4,(d.val/projMax)*100)}%`,transition:"height .6s ease,background .2s"}}/>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{textAlign:"center"}}>
-            <div style={{fontSize:10,color:"#6a8a6a"}}>القيمة المتوقعة بعد {projYears} سنوات</div>
-            <div style={{fontSize:26,fontWeight:900,color:"#C9A84C"}}>BD {fmt(selProj.val)}</div>
-          </div>
-        </div>
-      )}
-
-      {/* Goals */}
-      {goals.length>0&&(
-        <div style={{background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:14,padding:18,marginBottom:14}}>
-          <div style={{fontSize:13,fontWeight:800,color:"#C9A84C",marginBottom:14}}>🎯 خطة الأهداف</div>
-          {goals.map(g=>{
-            const gt=GOAL_TYPES.find(x=>x.id===g.type);
-            const pct=m.savings>0?Math.min(100,(m.savings/g.monthly)*100):0;
-            return(
-              <div key={g.id} style={{background:"#0a150a",borderRadius:10,padding:12,marginBottom:10}}>
-                <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
-                  <div style={{fontWeight:700,color:"#c8e0c8",fontSize:13}}>{gt?.icon} {gt?.label}</div>
-                  <div style={{color:"#C9A84C",fontWeight:700,fontSize:13}}>BD {fmt(g.target)}</div>
-                </div>
-                <Bar pct={pct} label={`${Math.round(pct)}% من التوفير المتاح`} color={pct>=100?"#4CAF50":"#FFC107"}/>
-                <div style={{fontSize:10,color:"#6a8a6a"}}>BD {fmt(g.monthly)}/شهر · خلال {g.years} سنة</div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Debt */}
-      {m.totalLiabilities>0&&(
-        <div style={{background:"#1a0f0f",border:"1px solid #3a1a1a",borderRadius:14,padding:18,marginBottom:14}}>
-          <div style={{fontSize:13,fontWeight:800,color:"#F44336",marginBottom:12}}>🏦 خطة تصفية الديون</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
-            {[{t:"كرة الثلج ❄️",d:"ابدأ بأصغر دين",s:"يبني الدافعية"},{t:"الانهيار الجليدي 🏔️",d:"ابدأ بأعلى فائدة",s:"يوفر أكثر"}].map((x,i)=>(
-              <div key={i} style={{background:"#0a0808",borderRadius:10,padding:12,textAlign:"center",border:"1px solid #2a1a1a"}}>
-                <div style={{fontSize:12,color:"#c8a0a0",fontWeight:700,marginBottom:4}}>{x.t}</div>
-                <div style={{fontSize:11,color:"#8a6a6a"}}>{x.d}</div>
-                <div style={{fontSize:10,color:"#5a4a4a",marginTop:3}}>{x.s}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{background:"#0a0808",borderRadius:10,padding:12}}>
-            {[["إجمالي الديون",`BD ${fmt(m.totalLiabilities)}`,"#F44336"],["الأقساط الشهرية",`BD ${fmt(m.monthlyDebt)}`,"#FF9800"],["للتحرر الكامل تقريباً",`${Math.ceil(m.totalLiabilities/(m.monthlyDebt||1))} شهر`,"#FFC107"]].map((r,i)=>(
-              <div key={i} style={{display:"flex",justifyContent:"space-between",marginBottom:i<2?8:0}}>
-                <span style={{fontSize:11,color:"#8a6a6a"}}>{r[0]}</span>
-                <span style={{color:r[2],fontWeight:700,fontSize:12}}>{r[1]}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <AIDoctor metrics={m}/>
-
-      <div style={{background:"#0a0f0a",border:"1px solid #1a2a1a",borderRadius:10,padding:14,marginTop:16,textAlign:"center"}}>
-        <div style={{fontSize:11,color:"#4a6a4a",lineHeight:1.8}}>
-          🔒 جميع بيانات العميل محفوظة بشكل آمن وتُعامَل بسرية تامة<br/>
-          <span style={{fontSize:10}}>Cash Clinic Pro · AI-Powered Financial Diagnosis</span>
+          <div class="testi-name">خالد م.</div>
+          <div class="testi-role">موظف حكومي · البحرين</div>
         </div>
       </div>
     </div>
-  );
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"كنت أفكر أستثمر بس ما أدري إذا وضعي المالي جاهز. البرنامج قالي صراحة: مو جاهز بعد، وعطاني خطة واضحة أشتغل عليها."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">س</div>
+        <div>
+          <div class="testi-name">سارة ع.</div>
+          <div class="testi-role">معلمة · الكويت</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"خطة سداد الديون اللي أعطاني إياها وفّرت عليّ أكثر من 800 دولار في الفوائد. استثمار $19.99 رجع بشكل ما توقعته!"</div>
+      <div class="testi-author">
+        <div class="testi-avatar">ف</div>
+        <div>
+          <div class="testi-name">فيصل ر.</div>
+          <div class="testi-role">مهندس · السعودية</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="section-tag">السعر</div>
+  <h2 class="section-title" style="text-align:center">استثمار صغير. نتائج كبيرة.</h2>
+  <div class="pricing-card">
+    <div class="pricing-badge">🏥 Cash Clinic Pro — الإصدار الكامل</div>
+    <div class="pricing-name">دفعة واحدة فقط</div>
+    <div class="pricing-price"><sup>$</sup>19<span style="font-size:32px">.99</span></div>
+    <div class="pricing-period">وصول مدى الحياة · بدون رسوم شهرية</div>
+    <ul class="pricing-list">
+      <li>النظام الكامل مع جميع الأدوات</li>
+      <li>الدكتور المالي بالذكاء الاصطناعي</li>
+      <li>تحليل الديون وخطة السداد</li>
+      <li>إسقاطات الثروة 30 سنة</li>
+      <li>خطة الأهداف المالية</li>
+      <li>يعمل على جميع الأجهزة</li>
+      <li>تحديثات مجانية</li>
+      <li>دعم فني عبر البريد</li>
+    </ul>
+    <button class="btn-primary" style="width:100%;font-size:15px;padding:18px 0" onclick="window.open('https://dropstoreme.gumroad.com/l/cashclinicpro','_blank')">
+      احصل على Cash Clinic Pro الآن ←
+    </button>
+    <div class="pricing-guarantee">
+      🔒 دفع آمن عبر Gumroad · استرداد كامل خلال 30 يوم
+    </div>
+    <div class="security-bar">
+      <div class="security-item">🔐 <span>دفع مشفر</span></div>
+      <div class="security-item">📧 <span>وصول فوري</span></div>
+      <div class="security-item">♾️ <span>مدى الحياة</span></div>
+      <div class="security-item">🔄 <span>ضمان 30 يوم</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="section-tag">أسئلة شائعة</div>
+  <h2 class="section-title">أسئلة وأجوبة</h2>
+  <div class="faq-wrap" id="faq">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">كيف أستلم المنتج بعد الشراء؟ <span>+</span></div>
+      <div class="faq-a">فور اكتمال الدفع عبر Gumroad، ستصلك رسالة بريد إلكتروني تحتوي على رابط التحميل ورابط النظام. الوصول فوري وتلقائي.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">هل يعمل على الأيفون والأندرويد؟ <span>+</span></div>
+      <div class="faq-a">نعم، يعمل على جميع الأجهزة — أيفون، أندرويد، تابلت، وكمبيوتر. لا يحتاج تثبيت، يعمل مباشرة من المتصفح ويمكن إضافته للشاشة الرئيسية.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">هل بياناتي المالية آمنة؟ <span>+</span></div>
+      <div class="faq-a">جميع بياناتك تبقى محلياً على جهازك فقط ولا تُرسل إلى أي خادم خارجي. خصوصيتك محمية بالكامل.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">ما الفرق بينه وبين مستشار مالي؟ <span>+</span></div>
+      <div class="faq-a">المستشار المالي يكلف مئات الدولارات للجلسة الواحدة، بينما Cash Clinic Pro يعطيك تشخيصاً شاملاً بـ $19.99 فقط — وبسرية تامة.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">ما سياسة الاسترداد؟ <span>+</span></div>
+      <div class="faq-a">نقدم ضماناً كاملاً لاسترداد المبلغ خلال 30 يوماً من الشراء إذا لم تكن راضياً عن المنتج لأي سبب.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FINAL CTA -->
+<section class="section" style="text-align:center;padding:60px 20px">
+  <div style="font-size:48px;margin-bottom:20px">🏥</div>
+  <h2 class="section-title" style="text-align:center;max-width:600px;margin:0 auto 16px">
+    وضعك المالي يستحق<br><span style="color:var(--gold)">تشخيصاً حقيقياً</span>
+  </h2>
+  <p class="section-sub" style="margin:0 auto 32px;text-align:center">
+    لا تنتظر حتى تتراكم الديون أو تضيع الفرص. ابدأ اليوم بخطوة واحدة.
+  </p>
+  <button class="btn-primary" style="font-size:16px;padding:18px 48px" onclick="window.open('https://dropstoreme.gumroad.com/l/cashclinicpro','_blank')">
+    ابدأ تشخيصك المالي الآن
+  </button>
+  <div style="margin-top:12px;font-size:12px;color:var(--text-muted)">
+    $19.99 · دفعة واحدة · وصول فوري · ضمان 30 يوم
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🏥 Cash Clinic Pro</div>
+  <div class="footer-tagline">Diagnose. Treat. Grow Your Wealth.</div>
+  <div class="footer-links">
+    <a href="mailto:support@cashclinicpro.com">الدعم الفني</a>
+    <a href="#">سياسة الخصوصية</a>
+    <a href="#">شروط الاستخدام</a>
+    <a href="#">الاسترداد</a>
+  </div>
+  <div class="footer-copy">© 2025 Cash Clinic Pro. جميع الحقوق محفوظة.</div>
+</footer>
+
+<!-- FLOATING CTA -->
+<button class="float-cta" onclick="window.open('https://dropstoreme.gumroad.com/l/cashclinicpro','_blank')">
+  🏥 احصل عليه — $19.99 فقط
+</button>
+
+<script>
+function toggleFaq(el){
+  const isOpen=el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen)el.classList.add('open');
 }
 
-function App(){
-  const[step,setStep]=useState(0);
-  const[personal,setPersonal]=useState({name:"",age:"",marital:"أعزب",dependents:"0",employment:"موظف حكومي"});
-  const[income,setIncome]=useState({salary:"",freelance:"",rental:"",other:""});
-  const[assets,setAssets]=useState({cash:"",bank:"",gold:"",realestate:"",vehicles:"",stocks:"",crypto:"",other:""});
-  const[liabilities,setLiabilities]=useState({personal:"",personalPay:"",credit:"",creditPay:"",car:"",carPay:"",mortgage:"",mortgagePay:"",family:"",other:""});
-  const[expenses,setExpenses]=useState({housing:"",utilities:"",insurance:"",school:"",internet:"",transport:"",food:"",entertainment:"",shopping:"",restaurants:"",travel:"",misc:""});
-  const[risk,setRisk]=useState({});
-  const[goals,setGoals]=useState([]);
-  const[goalForm,setGoalForm]=useState({type:"retirement",target:"",years:"10"});
-  const[projYears,setProjYears]=useState(10);
-
-  const data={personal,income,assets,liabilities,expenses,risk};
-  const metrics=calcMetrics(data);
-
-  const goNext=()=>setStep(s=>Math.min(s+1,STEPS.length-1));
-  const goPrev=()=>setStep(s=>Math.max(s-1,0));
-
-  const addGoal=()=>{
-    if(!goalForm.target)return;
-    const monthly=parseFloat(goalForm.target)/(parseFloat(goalForm.years)*12);
-    setGoals(g=>[...g,{...goalForm,monthly:Math.round(monthly),id:Date.now()}]);
-    setGoalForm({type:"retirement",target:"",years:"10"});
-  };
-
-  const totalInc=metrics.totalIncome;
-
-  const renderStep=()=>{
-    switch(step){
-      case 0:return(
-        <div style={{textAlign:"center",padding:"30px 10px"}}>
-          <div style={{fontSize:64,marginBottom:16}}>🏥</div>
-          <div style={{fontSize:28,fontWeight:900,color:"#C9A84C",marginBottom:6}}>Cash Clinic Pro</div>
-          <div style={{fontSize:13,color:"#8aad8a",marginBottom:6}}>Diagnose. Treat. Grow Your Wealth.</div>
-          <div style={{fontSize:12,color:"#4a6a4a",marginBottom:28}}>شخّص · عالج · نمّ ثروتك</div>
-          <div style={{background:"#0f1f0f",border:"1px solid #C9A84C33",borderRadius:16,padding:20,marginBottom:24,textAlign:"right"}}>
-            <div style={{color:"#C9A84C",fontSize:14,fontWeight:800,marginBottom:14}}>فلسفة المنصة</div>
-            {["ليس كل شخص جاهزاً للاستثمار. الصحة المالية أولاً.","نشخّص وضعك الكامل قبل أي توصية.","نقدم خطة علاج مخصصة لوضعك الفريد.","الذكاء الاصطناعي يرافقك في كل خطوة."].map((t,i)=>(
-              <div key={i} style={{display:"flex",gap:8,alignItems:"flex-start",marginBottom:10}}>
-                <span style={{color:"#C9A84C",fontWeight:900,minWidth:18,fontSize:13}}>{i+1}.</span>
-                <span style={{color:"#c8e0c8",fontSize:12,lineHeight:1.6}}>{t}</span>
-              </div>
-            ))}
-          </div>
-          <div style={{background:"#0a150a",border:"1px solid #1a2a1a",borderRadius:10,padding:10,marginBottom:20,fontSize:11,color:"#4a6a4a"}}>
-            🔒 بياناتك محفوظة محلياً على جهازك فقط
-          </div>
-        </div>
-      );
-      case 1:return(
-        <div>
-          <SectionHeader icon="👤" title="البيانات الشخصية" sub="معلوماتك الأساسية"/>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0 12px"}}>
-            <Input label="الاسم" value={personal.name} onChange={v=>setPersonal({...personal,name:v})} prefix="" type="text"/>
-            <Input label="العمر" value={personal.age} onChange={v=>setPersonal({...personal,age:v})} prefix="سنة"/>
-            <Sel label="الحالة الاجتماعية" value={personal.marital} onChange={v=>setPersonal({...personal,marital:v})} options={["أعزب","متزوج","مطلق","أرمل"].map(x=>({v:x,l:x}))}/>
-            <Input label="المعالون" value={personal.dependents} onChange={v=>setPersonal({...personal,dependents:v})} prefix="فرد"/>
-          </div>
-          <Sel label="حالة التوظيف" value={personal.employment} onChange={v=>setPersonal({...personal,employment:v})} options={["موظف حكومي","موظف قطاع خاص","عسكري","أعمال حرة","صاحب عمل","متقاعد"].map(x=>({v:x,l:x}))}/>
-        </div>
-      );
-      case 2:return(
-        <div>
-          <SectionHeader icon="💰" title="مصادر الدخل" sub="دخلك الشهري من جميع المصادر"/>
-          <Input label="الراتب الأساسي" value={income.salary} onChange={v=>setIncome({...income,salary:v})} hint="الراتب الشهري الصافي"/>
-          <Input label="دخل العمل الحر / العمولات" value={income.freelance} onChange={v=>setIncome({...income,freelance:v})}/>
-          <Input label="دخل الإيجارات" value={income.rental} onChange={v=>setIncome({...income,rental:v})}/>
-          <Input label="مصادر أخرى" value={income.other} onChange={v=>setIncome({...income,other:v})}/>
-          {totalInc>0&&<div style={{background:"#0f2a0f",border:"1px solid #C9A84C44",borderRadius:10,padding:14,marginTop:4}}>
-            <div style={{color:"#8aad8a",fontSize:11}}>إجمالي الدخل الشهري</div>
-            <div style={{color:"#C9A84C",fontSize:22,fontWeight:900}}>BD {fmt(totalInc)}</div>
-          </div>}
-        </div>
-      );
-      case 3:return(
-        <div>
-          <SectionHeader icon="🏦" title="الأصول" sub="ما تملكه من أصول وممتلكات"/>
-          {[["cash","النقد في اليد"],["bank","الأرصدة البنكية"],["gold","الذهب والمجوهرات"],["realestate","العقارات"],["vehicles","السيارات"],["stocks","الأسهم والصناديق"],["crypto","العملات الرقمية"],["other","أصول أخرى"]].map(([k,l])=>(
-            <Input key={k} label={l} value={assets[k]} onChange={v=>setAssets({...assets,[k]:v})}/>
-          ))}
-          {metrics.totalAssets>0&&<div style={{background:"#0f2a0f",border:"1px solid #4CAF5044",borderRadius:10,padding:14}}>
-            <div style={{color:"#8aad8a",fontSize:11}}>إجمالي الأصول</div>
-            <div style={{color:"#4CAF50",fontSize:22,fontWeight:900}}>BD {fmt(metrics.totalAssets)}</div>
-          </div>}
-        </div>
-      );
-      case 4:return(
-        <div>
-          <SectionHeader icon="⚖️" title="الديون والالتزامات" sub="الأقساط الشهرية والأرصدة"/>
-          {[["personal","personalPay","قرض شخصي"],["credit","creditPay","بطاقات ائتمانية"],["car","carPay","قرض سيارة"],["mortgage","mortgagePay","رهن عقاري"]].map(([bal,pay,label])=>(
-            <div key={bal} style={{background:"#100f0f",border:"1px solid #2a1a1a",borderRadius:10,padding:14,marginBottom:12}}>
-              <div style={{color:"#c0a070",fontSize:12,fontWeight:700,marginBottom:10}}>{label}</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                <Input label="الرصيد المتبقي" value={liabilities[bal]} onChange={v=>setLiabilities({...liabilities,[bal]:v})}/>
-                <Input label="القسط الشهري" value={liabilities[pay]} onChange={v=>setLiabilities({...liabilities,[pay]:v})}/>
-              </div>
-            </div>
-          ))}
-          <Input label="ديون عائلية" value={liabilities.family} onChange={v=>setLiabilities({...liabilities,family:v})}/>
-          <Input label="ديون أخرى" value={liabilities.other} onChange={v=>setLiabilities({...liabilities,other:v})}/>
-        </div>
-      );
-      case 5:return(
-        <div>
-          <SectionHeader icon="💳" title="المصروفات الشهرية" sub="جميع نفقاتك الشهرية"/>
-          <div style={{color:"#C9A84C",fontSize:11,marginBottom:10,fontWeight:700}}>◆ المصروفات الثابتة</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0 12px"}}>
-            {[["housing","السكن"],["utilities","الكهرباء والماء"],["insurance","التأمين"],["school","المدرسة"],["internet","الإنترنت"],["transport","المواصلات"]].map(([k,l])=>(
-              <Input key={k} label={l} value={expenses[k]} onChange={v=>setExpenses({...expenses,[k]:v})}/>
-            ))}
-          </div>
-          <div style={{color:"#C9A84C",fontSize:11,marginBottom:10,fontWeight:700}}>◆ المصروفات المتغيرة</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0 12px"}}>
-            {[["food","الطعام"],["entertainment","الترفيه"],["shopping","التسوق"],["restaurants","المطاعم"],["travel","السفر"],["misc","متنوعات"]].map(([k,l])=>(
-              <Input key={k} label={l} value={expenses[k]} onChange={v=>setExpenses({...expenses,[k]:v})}/>
-            ))}
-          </div>
-        </div>
-      );
-      case 6:return(
-        <div>
-          <SectionHeader icon="📊" title="ملف المخاطر" sub="حدد مستوى تحملك للمخاطر"/>
-          {RISK_Q.map((q,qi)=>(
-            <div key={q.id} style={{marginBottom:16,background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:12,padding:14}}>
-              <div style={{color:"#c8e0c8",fontSize:13,marginBottom:10,fontWeight:700}}>{qi+1}. {q.q}</div>
-              <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                {q.opts.map((opt,oi)=>(
-                  <button key={oi} onClick={()=>setRisk({...risk,[q.id]:oi})}
-                    style={{background:risk[q.id]===oi?"#C9A84C22":"#0a150a",border:`1px solid ${risk[q.id]===oi?"#C9A84C":"#2a3a2a"}`,borderRadius:8,padding:"9px 12px",color:risk[q.id]===oi?"#C9A84C":"#8aad8a",fontSize:12,cursor:"pointer",textAlign:"right",fontWeight:risk[q.id]===oi?700:400,transition:"all .2s"}}>
-                    {opt}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-          {Object.keys(risk).length===RISK_Q.length&&(
-            <div style={{background:"#0f2a0f",border:"1px solid #C9A84C44",borderRadius:10,padding:14,textAlign:"center"}}>
-              <div style={{color:"#8aad8a",fontSize:11}}>ملف مخاطرك</div>
-              <div style={{color:"#C9A84C",fontSize:20,fontWeight:900}}>{metrics.riskProfile}</div>
-            </div>
-          )}
-        </div>
-      );
-      case 7:return(
-        <div>
-          <SectionHeader icon="🎯" title="الأهداف المالية" sub="حدد أهدافك وسنحسب القسط الشهري"/>
-          <div style={{background:"#0f1f0f",border:"1px solid #2a4a2a",borderRadius:12,padding:16,marginBottom:18}}>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6,marginBottom:12}}>
-              {GOAL_TYPES.map(g=>(
-                <button key={g.id} onClick={()=>setGoalForm({...goalForm,type:g.id})}
-                  style={{background:goalForm.type===g.id?"#C9A84C22":"#0a150a",border:`1px solid ${goalForm.type===g.id?"#C9A84C":"#2a3a2a"}`,borderRadius:8,padding:"8px 4px",cursor:"pointer",color:goalForm.type===g.id?"#C9A84C":"#8aad8a",fontSize:11,fontWeight:goalForm.type===g.id?700:400,transition:"all .2s"}}>
-                  <div style={{fontSize:18}}>{g.icon}</div>
-                  <div>{g.label}</div>
-                </button>
-              ))}
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-              <Input label="المبلغ (BD)" value={goalForm.target} onChange={v=>setGoalForm({...goalForm,target:v})}/>
-              <Input label="المدة (سنوات)" value={goalForm.years} onChange={v=>setGoalForm({...goalForm,years:v})} prefix="سنة"/>
-            </div>
-            <button onClick={addGoal} style={{background:"linear-gradient(135deg,#C9A84C,#a8892e)",border:"none",borderRadius:8,padding:"11px 0",color:"#0a0f0a",fontWeight:900,fontSize:13,cursor:"pointer",width:"100%"}}>
-              + إضافة الهدف
-            </button>
-          </div>
-          {goals.map(g=>{
-            const gt=GOAL_TYPES.find(x=>x.id===g.type);
-            return(
-              <div key={g.id} style={{background:"#0a150a",border:"1px solid #2a4a2a",borderRadius:10,padding:14,marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                <div>
-                  <div style={{color:"#c8e0c8",fontWeight:700,fontSize:13}}>{gt?.icon} {gt?.label}</div>
-                  <div style={{color:"#6a8a6a",fontSize:11,marginTop:2}}>خلال {g.years} سنوات</div>
-                </div>
-                <div style={{textAlign:"left"}}>
-                  <div style={{color:"#C9A84C",fontWeight:900}}>BD {fmt(g.target)}</div>
-                  <div style={{color:"#8aad8a",fontSize:11}}>BD {fmt(g.monthly)}/شهر</div>
-                </div>
-              </div>
-            );
-          })}
-          {goals.length===0&&<div style={{color:"#4a6a4a",textAlign:"center",fontSize:12,padding:20}}>لم تضف أهدافاً بعد</div>}
-        </div>
-      );
-      case 8:return <DiagnosisPage metrics={metrics} goals={goals} projYears={projYears} setProjYears={setProjYears}/>;
-      default:return null;
+// Animate bars on scroll
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.bar-fill').forEach(b=>{
+        const w=b.style.width;b.style.width='0';
+        setTimeout(()=>b.style.width=w,100);
+      });
     }
-  };
+  });
+},{threshold:.3});
+document.querySelectorAll('.metrics-preview').forEach(el=>observer.observe(el));
 
-  return(
-    <div style={{fontFamily:"'Noto Sans Arabic','Segoe UI',sans-serif",background:"#070e07",minHeight:"100vh",color:"#e8f0e8",direction:"rtl"}}>
-      {/* Header */}
-      <div style={{background:"linear-gradient(180deg,#0a1a0a,#070e07)",borderBottom:"1px solid #C9A84C22",padding:"12px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:50}}>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <span style={{fontSize:22}}>🏥</span>
-          <div>
-            <div style={{fontSize:14,fontWeight:900,color:"#C9A84C"}}>Cash Clinic Pro</div>
-            <div style={{fontSize:9,color:"#4a6a4a"}}>شخّص · عالج · نمّ ثروتك</div>
-          </div>
-        </div>
-        {step>0&&step<8&&(
-          <div style={{display:"flex",alignItems:"center",gap:6}}>
-            <div style={{fontSize:10,color:"#6a8a6a"}}>{step}/7</div>
-            <div style={{width:50,height:4,background:"#1a2a1a",borderRadius:4,overflow:"hidden"}}>
-              <div style={{width:`${(step/7)*100}%`,height:"100%",background:"#C9A84C",transition:"width .4s ease"}}/>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Step tabs */}
-      {step>0&&step<8&&(
-        <div style={{padding:"8px 14px 0",overflowX:"auto",display:"flex",gap:5,WebkitOverflowScrolling:"touch"}}>
-          {STEPS.slice(1,8).map((s,i)=>(
-            <button key={s.id} onClick={()=>setStep(i+1)}
-              style={{fontSize:10,padding:"4px 9px",borderRadius:20,cursor:"pointer",whiteSpace:"nowrap",background:step===i+1?"#C9A84C22":"#0f1f0f",border:`1px solid ${step===i+1?"#C9A84C":"#1a2a1a"}`,color:step===i+1?"#C9A84C":step>i+1?"#6aaa6a":"#4a6a4a",fontWeight:step===i+1?700:400,fontFamily:"'Noto Sans Arabic','Segoe UI',sans-serif"}}>
-              {step>i+1?"✓ ":""}{s.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Content */}
-      <div style={{maxWidth:520,margin:"0 auto",padding:"18px 14px 110px"}}>
-        <div className="fade" key={step}>{renderStep()}</div>
-      </div>
-
-      {/* Nav buttons */}
-      {step<8&&(
-        <div style={{position:"fixed",bottom:0,left:0,right:0,background:"linear-gradient(180deg,transparent,#070e07 30%)",padding:"16px 14px 28px",display:"flex",gap:10,maxWidth:520,margin:"0 auto"}}>
-          {step>0&&(
-            <button onClick={goPrev} style={{flex:1,background:"transparent",border:"1px solid #2a4a2a",borderRadius:12,padding:"13px 0",color:"#8aad8a",fontSize:13,cursor:"pointer",fontFamily:"'Noto Sans Arabic','Segoe UI',sans-serif"}}>
-              → رجوع
-            </button>
-          )}
-          <button onClick={goNext} style={{flex:2,background:"linear-gradient(135deg,#C9A84C,#a8892e)",border:"none",borderRadius:12,padding:"13px 0",color:"#0a0f0a",fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:"'Noto Sans Arabic','Segoe UI',sans-serif"}}>
-            {step===7?"🔬 عرض التشخيص الكامل":step===0?"ابدأ التشخيص ←":"التالي ←"}
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+// Hide float CTA near footer
+window.addEventListener('scroll',()=>{
+  const btn=document.querySelector('.float-cta');
+  const footer=document.querySelector('footer');
+  const fTop=footer.getBoundingClientRect().top;
+  btn.style.opacity=fTop<200?'0':'1';
+  btn.style.pointerEvents=fTop<200?'none':'auto';
+});
 </script>
 </body>
 </html>
