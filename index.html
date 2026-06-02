@@ -33,14 +33,12 @@ body{
   direction:rtl;
   overflow-x:hidden;
 }
-/* NOISE TEXTURE */
 body::before{
   content:'';
   position:fixed;inset:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events:none;z-index:0;opacity:.4;
 }
-/* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:16px 24px;
@@ -61,8 +59,6 @@ nav{
   transition:transform .2s,box-shadow .2s;
 }
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.35)}
-
-/* HERO */
 .hero{
   min-height:100vh;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -132,12 +128,85 @@ nav{
   transition:border-color .2s,color .2s;
 }
 .btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
-.hero-price{
-  font-size:12px;color:var(--text-muted);margin-top:8px;
-}
+.hero-price{font-size:12px;color:var(--text-muted);margin-top:8px;}
 .hero-price span{color:var(--gold);font-weight:700}
 
-/* STATS BAR */
+/* ===== VIDEO SECTION ===== */
+.video-wrap{
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:40px;
+  max-width:700px;
+  width:100%;
+  margin-left:auto;
+  margin-right:auto;
+  background:#000;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--green-border);
+}
+.video-wrap video{
+  width:100%;
+  display:block;
+  border-radius:20px;
+}
+/* بادج "معاينة مباشرة" */
+.video-live-badge{
+  position:absolute;
+  top:14px;
+  right:14px;
+  background:rgba(7,14,7,.75);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(201,168,76,.25);
+  border-radius:100px;
+  padding:5px 12px;
+  color:var(--gold);
+  font-size:11px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  pointer-events:none;
+}
+.video-live-badge::before{
+  content:'';
+  width:7px;height:7px;
+  background:var(--gold);
+  border-radius:50%;
+  animation:livePulse 1.5s infinite;
+}
+/* زر كتم / تشغيل */
+.mute-btn{
+  position:absolute;
+  bottom:14px;
+  left:14px;
+  background:rgba(7,14,7,.75);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:50px;
+  padding:8px 16px;
+  color:#fff;
+  font-size:12px;
+  font-family:'Noto Sans Arabic',sans-serif;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:all .2s ease;
+  user-select:none;
+}
+.mute-btn:hover{
+  background:rgba(201,168,76,.85);
+  border-color:transparent;
+  color:#060c06;
+  transform:scale(1.05);
+}
+@keyframes livePulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.5;transform:scale(1.3)}
+}
+/* ===== END VIDEO ===== */
+
 .stats-bar{
   background:rgba(13,26,13,.8);
   border-top:1px solid var(--green-border);
@@ -146,15 +215,10 @@ nav{
   display:flex;justify-content:center;flex-wrap:wrap;gap:8px;
   position:relative;z-index:1;
 }
-.stat-item{
-  text-align:center;padding:12px 24px;
-  border-left:1px solid var(--green-border);
-}
+.stat-item{text-align:center;padding:12px 24px;border-left:1px solid var(--green-border);}
 .stat-item:last-child{border-left:none}
 .stat-num{font-size:26px;font-weight:900;color:var(--gold)}
 .stat-label{font-size:11px;color:var(--text-muted);margin-top:2px}
-
-/* PAIN SECTION */
 .section{padding:80px 20px;max-width:900px;margin:0 auto;position:relative;z-index:1}
 .section-tag{
   display:inline-block;
@@ -163,17 +227,9 @@ nav{
   font-size:11px;color:var(--gold);font-weight:700;letter-spacing:1px;
   text-transform:uppercase;margin-bottom:16px;
 }
-.section-title{
-  font-size:clamp(22px,4vw,36px);font-weight:900;
-  line-height:1.35;margin-bottom:12px;
-}
+.section-title{font-size:clamp(22px,4vw,36px);font-weight:900;line-height:1.35;margin-bottom:12px;}
 .section-sub{font-size:14px;color:var(--text-dim);line-height:1.8;max-width:600px}
-
-/* PAIN CARDS */
-.pain-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:16px;margin-top:40px;
-}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:40px;}
 .pain-card{
   background:linear-gradient(135deg,#120808,#1a0c0c);
   border:1px solid rgba(244,67,54,.15);
@@ -184,72 +240,28 @@ nav{
 .pain-icon{font-size:28px;margin-bottom:12px}
 .pain-title{font-size:15px;font-weight:800;color:#ef9a9a;margin-bottom:8px}
 .pain-desc{font-size:12px;color:#7a5a5a;line-height:1.7}
-
-/* SOLUTION */
-.solution-wrap{
-  background:linear-gradient(135deg,#0a1a0a,#0f2a0f);
-  border:1px solid var(--green-border);
-  border-radius:24px;padding:40px;margin-top:40px;
-}
-.features-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:14px;margin-top:32px;
-}
+.solution-wrap{background:linear-gradient(135deg,#0a1a0a,#0f2a0f);border:1px solid var(--green-border);border-radius:24px;padding:40px;margin-top:40px;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:32px;}
 .feature-item{
-  background:rgba(7,14,7,.6);
-  border:1px solid var(--green-border);
-  border-radius:12px;padding:18px;
-  display:flex;gap:12px;align-items:flex-start;
+  background:rgba(7,14,7,.6);border:1px solid var(--green-border);
+  border-radius:12px;padding:18px;display:flex;gap:12px;align-items:flex-start;
   transition:border-color .2s,transform .2s;
 }
 .feature-item:hover{border-color:rgba(201,168,76,.4);transform:translateY(-2px)}
-.feature-check{
-  width:24px;height:24px;border-radius:50%;
-  background:rgba(76,175,80,.15);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;flex-shrink:0;margin-top:2px;
-}
+.feature-check{width:24px;height:24px;border-radius:50%;background:rgba(76,175,80,.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;}
 .feature-text{font-size:13px;color:var(--text-dim);line-height:1.6}
 .feature-text strong{color:var(--text);display:block;margin-bottom:3px;font-size:14px}
-
-/* HOW IT WORKS */
 .steps-wrap{margin-top:48px}
-.step-row{
-  display:flex;gap:20px;align-items:flex-start;
-  margin-bottom:24px;padding-bottom:24px;
-  border-bottom:1px solid var(--green-border);
-}
+.step-row{display:flex;gap:20px;align-items:flex-start;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--green-border);}
 .step-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.step-num{
-  width:44px;height:44px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),#a8892e);
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:900;color:#060c06;flex-shrink:0;
-}
-.step-content{}
+.step-num{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#a8892e);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#060c06;flex-shrink:0;}
 .step-title{font-size:15px;font-weight:800;margin-bottom:4px}
 .step-desc{font-size:12px;color:var(--text-dim);line-height:1.7}
-
-/* METRICS PREVIEW */
-.metrics-preview{
-  background:var(--green-card);
-  border:1px solid var(--green-border);
-  border-radius:20px;padding:28px;margin-top:40px;
-  position:relative;overflow:hidden;
-}
-.metrics-preview::before{
-  content:'';position:absolute;top:-40px;left:-40px;
-  width:200px;height:200px;
-  background:radial-gradient(circle,rgba(201,168,76,.06),transparent);
-  pointer-events:none;
-}
+.metrics-preview{background:var(--green-card);border:1px solid var(--green-border);border-radius:20px;padding:28px;margin-top:40px;position:relative;overflow:hidden;}
+.metrics-preview::before{content:'';position:absolute;top:-40px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,.06),transparent);pointer-events:none;}
 .metrics-title{font-size:13px;color:var(--text-muted);margin-bottom:20px;font-weight:700;letter-spacing:.5px}
 .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
-.metric-box{
-  background:rgba(7,14,7,.8);
-  border:1px solid var(--green-border);
-  border-radius:12px;padding:14px;text-align:center;
-}
+.metric-box{background:rgba(7,14,7,.8);border:1px solid var(--green-border);border-radius:12px;padding:14px;text-align:center;}
 .metric-val{font-size:22px;font-weight:900}
 .metric-lbl{font-size:10px;color:var(--text-muted);margin-top:3px}
 .bar-wrap{margin-bottom:10px}
@@ -258,174 +270,53 @@ nav{
 .bar-label-row span:last-child{font-size:11px;font-weight:700}
 .bar-track{background:#1a2a1a;border-radius:4px;height:7px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
-.locked-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,transparent 40%,rgba(7,14,7,.97) 70%);
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  padding-bottom:28px;border-radius:20px;
-}
-.locked-msg{
-  text-align:center;
-  background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);
-  border-radius:12px;padding:16px 24px;
-}
+.locked-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(7,14,7,.97) 70%);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:28px;border-radius:20px;}
+.locked-msg{text-align:center;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:16px 24px;}
 .locked-msg div:first-child{font-size:20px;margin-bottom:6px}
 .locked-msg div:nth-child(2){font-size:14px;font-weight:800;color:var(--gold);margin-bottom:4px}
 .locked-msg div:last-child{font-size:11px;color:var(--text-muted)}
-
-/* TESTIMONIALS */
 .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:32px}
-.testi-card{
-  background:var(--green-card);
-  border:1px solid var(--green-border);
-  border-radius:16px;padding:24px;
-  transition:transform .25s;
-}
+.testi-card{background:var(--green-card);border:1px solid var(--green-border);border-radius:16px;padding:24px;transition:transform .25s;}
 .testi-card:hover{transform:translateY(-4px)}
 .testi-stars{color:var(--gold);font-size:13px;margin-bottom:10px;letter-spacing:2px}
 .testi-text{font-size:13px;color:var(--text-dim);line-height:1.8;margin-bottom:14px}
 .testi-author{display:flex;align-items:center;gap:10px}
-.testi-avatar{
-  width:36px;height:36px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold-dim),var(--gold));
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:900;color:#060c06;
-}
+.testi-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#060c06;}
 .testi-name{font-size:13px;font-weight:700}
 .testi-role{font-size:10px;color:var(--text-muted)}
-
-/* PRICING */
-.pricing-card{
-  background:linear-gradient(135deg,#0a1a0a,#142014);
-  border:2px solid rgba(201,168,76,.3);
-  border-radius:28px;padding:44px;
-  max-width:520px;margin:40px auto 0;
-  text-align:center;position:relative;overflow:hidden;
-}
-.pricing-card::before{
-  content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
-  width:300px;height:300px;
-  background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);
-  pointer-events:none;
-}
-.pricing-badge{
-  display:inline-block;
-  background:linear-gradient(135deg,var(--gold),#a8892e);
-  color:#060c06;border-radius:50px;
-  padding:5px 18px;font-size:11px;font-weight:900;
-  margin-bottom:20px;
-}
+.pricing-card{background:linear-gradient(135deg,#0a1a0a,#142014);border:2px solid rgba(201,168,76,.3);border-radius:28px;padding:44px;max-width:520px;margin:40px auto 0;text-align:center;position:relative;overflow:hidden;}
+.pricing-card::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);pointer-events:none;}
+.pricing-badge{display:inline-block;background:linear-gradient(135deg,var(--gold),#a8892e);color:#060c06;border-radius:50px;padding:5px 18px;font-size:11px;font-weight:900;margin-bottom:20px;}
 .pricing-name{font-size:22px;font-weight:900;margin-bottom:8px}
-.pricing-price{
-  font-size:56px;font-weight:900;color:var(--gold);
-  line-height:1;margin-bottom:4px;
-}
+.pricing-price{font-size:56px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:4px;}
 .pricing-price sup{font-size:22px;vertical-align:top;margin-top:10px;display:inline-block}
 .pricing-period{font-size:12px;color:var(--text-muted);margin-bottom:28px}
 .pricing-list{list-style:none;text-align:right;margin-bottom:32px}
-.pricing-list li{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 0;border-bottom:1px solid var(--green-border);
-  font-size:13px;color:var(--text-dim);
-}
+.pricing-list li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--green-border);font-size:13px;color:var(--text-dim);}
 .pricing-list li:last-child{border-bottom:none}
 .pricing-list li::before{content:'✓';color:var(--green-ok);font-weight:900;font-size:14px}
-.pricing-guarantee{
-  margin-top:20px;font-size:11px;color:var(--text-muted);
-  display:flex;align-items:center;justify-content:center;gap:6px;
-}
-
-/* FAQ */
+.pricing-guarantee{margin-top:20px;font-size:11px;color:var(--text-muted);display:flex;align-items:center;justify-content:center;gap:6px;}
 .faq-wrap{margin-top:32px}
-.faq-item{
-  border-bottom:1px solid var(--green-border);
-  padding:20px 0;cursor:pointer;
-}
-.faq-q{
-  display:flex;justify-content:space-between;align-items:center;
-  font-size:14px;font-weight:700;color:var(--text);
-}
+.faq-item{border-bottom:1px solid var(--green-border);padding:20px 0;cursor:pointer;}
+.faq-q{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;color:var(--text);}
 .faq-q span{color:var(--gold);font-size:18px;font-weight:300;transition:transform .3s}
-.faq-a{
-  font-size:12px;color:var(--text-dim);line-height:1.8;
-  max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;
-}
+.faq-a{font-size:12px;color:var(--text-dim);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;}
 .faq-item.open .faq-a{max-height:200px;padding-top:12px}
 .faq-item.open .faq-q span{transform:rotate(45deg)}
-
-/* FOOTER */
-footer{
-  background:var(--green-mid);
-  border-top:1px solid var(--green-border);
-  padding:40px 20px;text-align:center;
-  position:relative;z-index:1;
-}
+footer{background:var(--green-mid);border-top:1px solid var(--green-border);padding:40px 20px;text-align:center;position:relative;z-index:1;}
 .footer-logo{font-size:18px;font-weight:900;color:var(--gold);margin-bottom:8px}
 .footer-tagline{font-size:12px;color:var(--text-muted);margin-bottom:20px}
 .footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:20px}
 .footer-links a{font-size:12px;color:var(--text-muted);text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:var(--gold)}
 .footer-copy{font-size:11px;color:#2a3a2a}
-
-/* FLOATING CTA */
-.float-cta{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
-  z-index:90;
-  background:linear-gradient(135deg,var(--gold),#a8892e);
-  border:none;border-radius:50px;
-  padding:14px 32px;
-  font-size:14px;font-weight:900;color:#060c06;
-  cursor:pointer;font-family:inherit;
-  box-shadow:0 8px 40px rgba(201,168,76,.4);
-  transition:transform .2s,box-shadow .2s;
-  white-space:nowrap;
-  animation:floatUp .6s 1s ease both;
-}
+.float-cta{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:90;background:linear-gradient(135deg,var(--gold),#a8892e);border:none;border-radius:50px;padding:14px 32px;font-size:14px;font-weight:900;color:#060c06;cursor:pointer;font-family:inherit;box-shadow:0 8px 40px rgba(201,168,76,.4);transition:transform .2s,box-shadow .2s;white-space:nowrap;animation:floatUp .6s 1s ease both;}
 .float-cta:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 16px 48px rgba(201,168,76,.5)}
-
-/* SECURITY BANNER */
-.security-bar{
-  background:rgba(13,26,13,.6);
-  border:1px solid var(--green-border);
-  border-radius:12px;padding:14px 20px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  font-size:11px;color:var(--text-muted);
-  margin-top:16px;flex-wrap:wrap;gap:16px;
-}
+.security-bar{background:rgba(13,26,13,.6);border:1px solid var(--green-border);border-radius:12px;padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;color:var(--text-muted);margin-top:16px;flex-wrap:wrap;gap:16px;}
 .security-item{display:flex;align-items:center;gap:6px}
-
-/* VIDEO PLACEHOLDER */
-.video-wrap{
-  background:var(--green-card);
-  border:1px solid var(--green-border);
-  border-radius:20px;
-  aspect-ratio:16/9;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  margin-top:40px;position:relative;overflow:hidden;
-  max-width:700px;margin-left:auto;margin-right:auto;
-}
-.video-wrap::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(201,168,76,.04),rgba(76,175,80,.04));
-}
-.play-btn{
-  width:72px;height:72px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),#a8892e);
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;cursor:pointer;
-  box-shadow:0 8px 32px rgba(201,168,76,.35);
-  transition:transform .2s;margin-bottom:14px;
-}
-.play-btn:hover{transform:scale(1.08)}
-.video-label{font-size:13px;color:var(--text-dim)}
-.video-duration{font-size:11px;color:var(--text-muted);margin-top:4px}
-
-/* ANIM */
 @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
 @keyframes floatUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
-
-/* RESPONSIVE */
 @media(max-width:600px){
   .stats-bar{flex-direction:column;align-items:center}
   .stat-item{border-left:none;border-bottom:1px solid var(--green-border);width:100%;padding:12px}
@@ -434,11 +325,7 @@ footer{
   .pricing-card{padding:28px 20px}
   .pricing-price{font-size:44px}
 }
-
-.divider{
-  height:1px;background:linear-gradient(90deg,transparent,var(--green-border),transparent);
-  margin:0;position:relative;z-index:1;
-}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--green-border),transparent);margin:0;position:relative;z-index:1;}
 </style>
 </head>
 <body>
@@ -479,34 +366,29 @@ footer{
     <div class="hero-price">دفعة واحدة فقط · <span>$19.99</span> · وصول فوري</div>
   </div>
 
-  <!-- Video Placeholder -->
+  <!-- ===== VIDEO ===== -->
   <div class="video-wrap">
-    <div class="play-btn">▶</div>
-    <div class="video-label">شاهد Cash Clinic Pro في العمل</div>
-    <div class="video-duration">⏱ 60 ثانية فقط</div>
+    <video id="demo-video" autoplay loop muted playsinline preload="auto">
+      <source src="demo.mp4" type="video/mp4">
+    </video>
+    <div class="video-live-badge">معاينة مباشرة</div>
+    <button class="mute-btn" id="mute-btn" onclick="toggleMute()">
+      <span id="mute-icon">🔇</span>
+      <span id="mute-label">تشغيل الصوت</span>
+    </button>
   </div>
+  <!-- ===== END VIDEO ===== -->
+
 </section>
 
 <div class="divider"></div>
 
 <!-- STATS BAR -->
 <div class="stats-bar">
-  <div class="stat-item">
-    <div class="stat-num">+2,400</div>
-    <div class="stat-label">مستخدم نشط</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">4.9 ⭐</div>
-    <div class="stat-label">تقييم المستخدمين</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">9</div>
-    <div class="stat-label">أدوات تحليل مالي</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">دقائق</div>
-    <div class="stat-label">للحصول على تشخيصك</div>
-  </div>
+  <div class="stat-item"><div class="stat-num">+2,400</div><div class="stat-label">مستخدم نشط</div></div>
+  <div class="stat-item"><div class="stat-num">4.9 ⭐</div><div class="stat-label">تقييم المستخدمين</div></div>
+  <div class="stat-item"><div class="stat-num">9</div><div class="stat-label">أدوات تحليل مالي</div></div>
+  <div class="stat-item"><div class="stat-num">دقائق</div><div class="stat-label">للحصول على تشخيصك</div></div>
 </div>
 
 <div class="divider"></div>
@@ -517,36 +399,12 @@ footer{
   <h2 class="section-title">هل تعاني من هذه المشاكل؟</h2>
   <p class="section-sub">ملايين الناس يعيشون هذه الضغوط المالية يومياً — بدون أي تشخيص أو خطة علاج واضحة.</p>
   <div class="pain-grid">
-    <div class="pain-card">
-      <div class="pain-icon">💸</div>
-      <div class="pain-title">الراتب يختفي</div>
-      <div class="pain-desc">ينزل الراتب ويختفي قبل نهاية الشهر دون أن تعرف أين ذهب.</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">⛓️</div>
-      <div class="pain-title">ديون بلا نهاية</div>
-      <div class="pain-desc">قروض وبطاقات ائتمانية تتراكم وتشعر أنك لن تتحرر منها أبداً.</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">😰</div>
-      <div class="pain-title">الخوف من الاستثمار</div>
-      <div class="pain-desc">تفكر بالاستثمار لكنك لا تعرف إن كان وضعك المالي مستعداً لذلك.</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">🏦</div>
-      <div class="pain-title">لا ادخار</div>
-      <div class="pain-desc">تحاول الادخار لكن لا تعرف كم المبلغ الصحيح أو كيف تبدأ.</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">🆘</div>
-      <div class="pain-title">لا طوارئ</div>
-      <div class="pain-desc">أي مصروف غير متوقع يقلب ميزانيتك كاملاً.</div>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">📉</div>
-      <div class="pain-title">لا خطة مالية</div>
-      <div class="pain-desc">تعيش من شهر لشهر بدون هدف أو رؤية واضحة لمستقبلك المالي.</div>
-    </div>
+    <div class="pain-card"><div class="pain-icon">💸</div><div class="pain-title">الراتب يختفي</div><div class="pain-desc">ينزل الراتب ويختفي قبل نهاية الشهر دون أن تعرف أين ذهب.</div></div>
+    <div class="pain-card"><div class="pain-icon">⛓️</div><div class="pain-title">ديون بلا نهاية</div><div class="pain-desc">قروض وبطاقات ائتمانية تتراكم وتشعر أنك لن تتحرر منها أبداً.</div></div>
+    <div class="pain-card"><div class="pain-icon">😰</div><div class="pain-title">الخوف من الاستثمار</div><div class="pain-desc">تفكر بالاستثمار لكنك لا تعرف إن كان وضعك المالي مستعداً لذلك.</div></div>
+    <div class="pain-card"><div class="pain-icon">🏦</div><div class="pain-title">لا ادخار</div><div class="pain-desc">تحاول الادخار لكن لا تعرف كم المبلغ الصحيح أو كيف تبدأ.</div></div>
+    <div class="pain-card"><div class="pain-icon">🆘</div><div class="pain-title">لا طوارئ</div><div class="pain-desc">أي مصروف غير متوقع يقلب ميزانيتك كاملاً.</div></div>
+    <div class="pain-card"><div class="pain-icon">📉</div><div class="pain-title">لا خطة مالية</div><div class="pain-desc">تعيش من شهر لشهر بدون هدف أو رؤية واضحة لمستقبلك المالي.</div></div>
   </div>
 </section>
 
@@ -559,42 +417,15 @@ footer{
   <p class="section-sub">نظام تشخيص مالي شامل يحلل وضعك الكامل ويعطيك خطة عمل مخصصة — بدون مستشار مالي باهظ الثمن.</p>
   <div class="solution-wrap">
     <div class="features-grid">
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>تحليل التدفق النقدي</strong>اعرف أين يذهب كل ريال من دخلك</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>تشخيص الصحة المالية</strong>درجة واضحة من 100 لوضعك الكامل</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>خطة سداد الديون</strong>Snowball أو Avalanche — اختر طريقتك</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>جاهزية الاستثمار</strong>هل أنت مستعد؟ احصل على جواب واضح</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>ملف المخاطر</strong>توزيع استثماري مخصص حسب شخصيتك</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>إسقاطات الثروة</strong>شوف ثروتك بعد 5، 10، 20 سنة</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>خطة الأهداف</strong>احسب القسط الشهري لكل هدف مالي</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>الدكتور المالي AI</strong>توصيات مخصصة بالذكاء الاصطناعي</div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-check">✓</div>
-        <div class="feature-text"><strong>واجهة عربية كاملة</strong>مصمم للسوق الخليجي بالكامل</div>
-      </div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>تحليل التدفق النقدي</strong>اعرف أين يذهب كل ريال من دخلك</div></div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>تشخيص الصحة المالية</strong>درجة واضحة من 100 لوضعك الكامل</div></div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>خطة سداد الديون</strong>Snowball أو Avalanche — اختر طريقتك</div></div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>جاهزية الاستثمار</strong>هل أنت مستعد؟ احصل على جواب واضح</div></div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>ملف المخاطر</strong>توزيع استثماري مخصص حسب شخصيتك</div></div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>إسقاطات الثروة</strong>شوف ثروتك بعد 5، 10، 20 سنة</div></div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>خطة الأهداف</strong>احسب القسط الشهري لكل هدف مالي</div></div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>الدكتور المالي AI</strong>توصيات مخصصة بالذكاء الاصطناعي</div></div>
+      <div class="feature-item"><div class="feature-check">✓</div><div class="feature-text"><strong>واجهة عربية كاملة</strong>مصمم للسوق الخليجي بالكامل</div></div>
     </div>
   </div>
 </section>
@@ -606,35 +437,16 @@ footer{
   <div class="section-tag">معاينة النظام</div>
   <h2 class="section-title">هكذا يبدو تقريرك المالي</h2>
   <p class="section-sub">نموذج من التحليل الذي ستحصل عليه فور إدخال بياناتك.</p>
-
   <div class="metrics-preview">
     <div class="metrics-title">📊 لوحة الصحة المالية — نموذج توضيحي</div>
     <div class="metrics-grid">
-      <div class="metric-box">
-        <div class="metric-val" style="color:#4CAF50">74</div>
-        <div class="metric-lbl">الصحة المالية</div>
-      </div>
-      <div class="metric-box">
-        <div class="metric-val" style="color:#C9A84C">68</div>
-        <div class="metric-lbl">جاهزية الاستثمار</div>
-      </div>
-      <div class="metric-box">
-        <div class="metric-val" style="color:#8BC34A">22%</div>
-        <div class="metric-lbl">نسبة الديون</div>
-      </div>
+      <div class="metric-box"><div class="metric-val" style="color:#4CAF50">74</div><div class="metric-lbl">الصحة المالية</div></div>
+      <div class="metric-box"><div class="metric-val" style="color:#C9A84C">68</div><div class="metric-lbl">جاهزية الاستثمار</div></div>
+      <div class="metric-box"><div class="metric-val" style="color:#8BC34A">22%</div><div class="metric-lbl">نسبة الديون</div></div>
     </div>
-    <div class="bar-wrap">
-      <div class="bar-label-row"><span>المصروفات الثابتة</span><span style="color:#E57373">38%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width:38%;background:#E57373"></div></div>
-    </div>
-    <div class="bar-wrap">
-      <div class="bar-label-row"><span>المصروفات المتغيرة</span><span style="color:#FF9800">24%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width:24%;background:#FF9800"></div></div>
-    </div>
-    <div class="bar-wrap">
-      <div class="bar-label-row"><span>نسبة الادخار</span><span style="color:#4CAF50">18%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width:18%;background:#4CAF50"></div></div>
-    </div>
+    <div class="bar-wrap"><div class="bar-label-row"><span>المصروفات الثابتة</span><span style="color:#E57373">38%</span></div><div class="bar-track"><div class="bar-fill" style="width:38%;background:#E57373"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label-row"><span>المصروفات المتغيرة</span><span style="color:#FF9800">24%</span></div><div class="bar-track"><div class="bar-fill" style="width:24%;background:#FF9800"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label-row"><span>نسبة الادخار</span><span style="color:#4CAF50">18%</span></div><div class="bar-track"><div class="bar-fill" style="width:18%;background:#4CAF50"></div></div></div>
     <div class="locked-overlay">
       <div class="locked-msg">
         <div>🔒</div>
@@ -652,41 +464,11 @@ footer{
   <div class="section-tag">كيف يعمل</div>
   <h2 class="section-title">من الشراء إلى التشخيص في 5 خطوات</h2>
   <div class="steps-wrap">
-    <div class="step-row">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <div class="step-title">اشتر Cash Clinic Pro — $19.99</div>
-        <div class="step-desc">دفعة واحدة فقط عبر Gumroad. يقبل جميع بطاقات الائتمان والـ PayPal.</div>
-      </div>
-    </div>
-    <div class="step-row">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <div class="step-title">استلم رابط التحميل فوراً</div>
-        <div class="step-desc">بعد الدفع مباشرة، تصلك رسالة على بريدك مع رابط الوصول الكامل للنظام.</div>
-      </div>
-    </div>
-    <div class="step-row">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <div class="step-title">افتح النظام على هاتفك أو جهازك</div>
-        <div class="step-desc">يعمل على أي جهاز بدون تثبيت. يمكن إضافته للشاشة الرئيسية كتطبيق.</div>
-      </div>
-    </div>
-    <div class="step-row">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <div class="step-title">أدخل بياناتك المالية (10 دقائق)</div>
-        <div class="step-desc">دخلك، مصروفاتك، أصولك، وديونك — كلها في 8 خطوات واضحة.</div>
-      </div>
-    </div>
-    <div class="step-row">
-      <div class="step-num">5</div>
-      <div class="step-content">
-        <div class="step-title">احصل على تشخيصك الكامل فوراً</div>
-        <div class="step-desc">تقرير مالي احترافي مع توصيات مخصصة من الذكاء الاصطناعي.</div>
-      </div>
-    </div>
+    <div class="step-row"><div class="step-num">1</div><div class="step-content"><div class="step-title">اشتر Cash Clinic Pro — $19.99</div><div class="step-desc">دفعة واحدة فقط عبر Gumroad. يقبل جميع بطاقات الائتمان والـ PayPal.</div></div></div>
+    <div class="step-row"><div class="step-num">2</div><div class="step-content"><div class="step-title">استلم رابط التحميل فوراً</div><div class="step-desc">بعد الدفع مباشرة، تصلك رسالة على بريدك مع رابط الوصول الكامل للنظام.</div></div></div>
+    <div class="step-row"><div class="step-num">3</div><div class="step-content"><div class="step-title">افتح النظام على هاتفك أو جهازك</div><div class="step-desc">يعمل على أي جهاز بدون تثبيت. يمكن إضافته للشاشة الرئيسية كتطبيق.</div></div></div>
+    <div class="step-row"><div class="step-num">4</div><div class="step-content"><div class="step-title">أدخل بياناتك المالية (10 دقائق)</div><div class="step-desc">دخلك، مصروفاتك، أصولك، وديونك — كلها في 8 خطوات واضحة.</div></div></div>
+    <div class="step-row"><div class="step-num">5</div><div class="step-content"><div class="step-title">احصل على تشخيصك الكامل فوراً</div><div class="step-desc">تقرير مالي احترافي مع توصيات مخصصة من الذكاء الاصطناعي.</div></div></div>
   </div>
 </section>
 
@@ -697,39 +479,9 @@ footer{
   <div class="section-tag">آراء العملاء</div>
   <h2 class="section-title">ماذا قالوا عن Cash Clinic Pro</h2>
   <div class="testi-grid">
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"أخيراً فهمت ليش ما أقدر أدخر! النظام كشف إن 34% من دخلي يروح على مصروفات ما أنتبه لها. غيّر طريقة تفكيري بالكامل."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">خ</div>
-        <div>
-          <div class="testi-name">خالد م.</div>
-          <div class="testi-role">موظف حكومي · البحرين</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"كنت أفكر أستثمر بس ما أدري إذا وضعي المالي جاهز. البرنامج قالي صراحة: مو جاهز بعد، وعطاني خطة واضحة أشتغل عليها."</div>
-      <div class="testi-author">
-        <div class="testi-avatar">س</div>
-        <div>
-          <div class="testi-name">سارة ع.</div>
-          <div class="testi-role">معلمة · الكويت</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"خطة سداد الديون اللي أعطاني إياها وفّرت عليّ أكثر من 800 دولار في الفوائد. استثمار $19.99 رجع بشكل ما توقعته!"</div>
-      <div class="testi-author">
-        <div class="testi-avatar">ف</div>
-        <div>
-          <div class="testi-name">فيصل ر.</div>
-          <div class="testi-role">مهندس · السعودية</div>
-        </div>
-      </div>
-    </div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"أخيراً فهمت ليش ما أقدر أدخر! النظام كشف إن 34% من دخلي يروح على مصروفات ما أنتبه لها. غيّر طريقة تفكيري بالكامل."</div><div class="testi-author"><div class="testi-avatar">خ</div><div><div class="testi-name">خالد م.</div><div class="testi-role">موظف حكومي · البحرين</div></div></div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"كنت أفكر أستثمر بس ما أدري إذا وضعي المالي جاهز. البرنامج قالي صراحة: مو جاهز بعد، وعطاني خطة واضحة أشتغل عليها."</div><div class="testi-author"><div class="testi-avatar">س</div><div><div class="testi-name">سارة ع.</div><div class="testi-role">معلمة · الكويت</div></div></div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"خطة سداد الديون اللي أعطاني إياها وفّرت عليّ أكثر من 800 دولار في الفوائد. استثمار $19.99 رجع بشكل ما توقعته!"</div><div class="testi-author"><div class="testi-avatar">ف</div><div><div class="testi-name">فيصل ر.</div><div class="testi-role">مهندس · السعودية</div></div></div></div>
   </div>
 </section>
 
@@ -757,9 +509,7 @@ footer{
     <button class="btn-primary" style="width:100%;font-size:15px;padding:18px 0" onclick="window.open('https://cashclinicpro.gumroad.com/l/lqfbq','_blank')">
       احصل على Cash Clinic Pro الآن ←
     </button>
-    <div class="pricing-guarantee">
-      🔒 دفع آمن عبر Gumroad · استرداد كامل خلال 30 يوم
-    </div>
+    <div class="pricing-guarantee">🔒 دفع آمن عبر Gumroad · استرداد كامل خلال 30 يوم</div>
     <div class="security-bar">
       <div class="security-item">🔐 <span>دفع مشفر</span></div>
       <div class="security-item">📧 <span>وصول فوري</span></div>
@@ -776,26 +526,11 @@ footer{
   <div class="section-tag">أسئلة شائعة</div>
   <h2 class="section-title">أسئلة وأجوبة</h2>
   <div class="faq-wrap" id="faq">
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">كيف أستلم المنتج بعد الشراء؟ <span>+</span></div>
-      <div class="faq-a">فور اكتمال الدفع عبر Gumroad، ستصلك رسالة بريد إلكتروني تحتوي على رابط التحميل ورابط النظام. الوصول فوري وتلقائي.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">هل يعمل على الأيفون والأندرويد؟ <span>+</span></div>
-      <div class="faq-a">نعم، يعمل على جميع الأجهزة — أيفون، أندرويد، تابلت، وكمبيوتر. لا يحتاج تثبيت، يعمل مباشرة من المتصفح ويمكن إضافته للشاشة الرئيسية.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">هل بياناتي المالية آمنة؟ <span>+</span></div>
-      <div class="faq-a">جميع بياناتك تبقى محلياً على جهازك فقط ولا تُرسل إلى أي خادم خارجي. خصوصيتك محمية بالكامل.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">ما الفرق بينه وبين مستشار مالي؟ <span>+</span></div>
-      <div class="faq-a">المستشار المالي يكلف مئات الدولارات للجلسة الواحدة، بينما Cash Clinic Pro يعطيك تشخيصاً شاملاً بـ $19.99 فقط — وبسرية تامة.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">ما سياسة الاسترداد؟ <span>+</span></div>
-      <div class="faq-a">نقدم ضماناً كاملاً لاسترداد المبلغ خلال 30 يوماً من الشراء إذا لم تكن راضياً عن المنتج لأي سبب.</div>
-    </div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">كيف أستلم المنتج بعد الشراء؟ <span>+</span></div><div class="faq-a">فور اكتمال الدفع عبر Gumroad، ستصلك رسالة بريد إلكتروني تحتوي على رابط التحميل ورابط النظام. الوصول فوري وتلقائي.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">هل يعمل على الأيفون والأندرويد؟ <span>+</span></div><div class="faq-a">نعم، يعمل على جميع الأجهزة — أيفون، أندرويد، تابلت، وكمبيوتر. لا يحتاج تثبيت، يعمل مباشرة من المتصفح ويمكن إضافته للشاشة الرئيسية.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">هل بياناتي المالية آمنة؟ <span>+</span></div><div class="faq-a">جميع بياناتك تبقى محلياً على جهازك فقط ولا تُرسل إلى أي خادم خارجي. خصوصيتك محمية بالكامل.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">ما الفرق بينه وبين مستشار مالي؟ <span>+</span></div><div class="faq-a">المستشار المالي يكلف مئات الدولارات للجلسة الواحدة، بينما Cash Clinic Pro يعطيك تشخيصاً شاملاً بـ $19.99 فقط — وبسرية تامة.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">ما سياسة الاسترداد؟ <span>+</span></div><div class="faq-a">نقدم ضماناً كاملاً لاسترداد المبلغ خلال 30 يوماً من الشراء إذا لم تكن راضياً عن المنتج لأي سبب.</div></div>
   </div>
 </section>
 
@@ -807,15 +542,9 @@ footer{
   <h2 class="section-title" style="text-align:center;max-width:600px;margin:0 auto 16px">
     وضعك المالي يستحق<br><span style="color:var(--gold)">تشخيصاً حقيقياً</span>
   </h2>
-  <p class="section-sub" style="margin:0 auto 32px;text-align:center">
-    لا تنتظر حتى تتراكم الديون أو تضيع الفرص. ابدأ اليوم بخطوة واحدة.
-  </p>
-  <button class="btn-primary" style="font-size:16px;padding:18px 48px" onclick="window.open('https://cashclinicpro.gumroad.com/l/lqfbq','_blank')">
-    ابدأ تشخيصك المالي الآن
-  </button>
-  <div style="margin-top:12px;font-size:12px;color:var(--text-muted)">
-    $19.99 · دفعة واحدة · وصول فوري · ضمان 30 يوم
-  </div>
+  <p class="section-sub" style="margin:0 auto 32px;text-align:center">لا تنتظر حتى تتراكم الديون أو تضيع الفرص. ابدأ اليوم بخطوة واحدة.</p>
+  <button class="btn-primary" style="font-size:16px;padding:18px 48px" onclick="window.open('https://cashclinicpro.gumroad.com/l/lqfbq','_blank')">ابدأ تشخيصك المالي الآن</button>
+  <div style="margin-top:12px;font-size:12px;color:var(--text-muted)">$19.99 · دفعة واحدة · وصول فوري · ضمان 30 يوم</div>
 </section>
 
 <!-- FOOTER -->
@@ -837,13 +566,27 @@ footer{
 </button>
 
 <script>
+function toggleMute() {
+  const video = document.getElementById('demo-video');
+  const icon  = document.getElementById('mute-icon');
+  const label = document.getElementById('mute-label');
+  if (video.muted) {
+    video.muted = false;
+    icon.textContent  = '🔊';
+    label.textContent = 'كتم الصوت';
+  } else {
+    video.muted = true;
+    icon.textContent  = '🔇';
+    label.textContent = 'تشغيل الصوت';
+  }
+}
+
 function toggleFaq(el){
   const isOpen=el.classList.contains('open');
   document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
   if(!isOpen)el.classList.add('open');
 }
 
-// Animate bars on scroll
 const observer=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
@@ -856,7 +599,6 @@ const observer=new IntersectionObserver(entries=>{
 },{threshold:.3});
 document.querySelectorAll('.metrics-preview').forEach(el=>observer.observe(el));
 
-// Hide float CTA near footer
 window.addEventListener('scroll',()=>{
   const btn=document.querySelector('.float-cta');
   const footer=document.querySelector('footer');
