@@ -39,6 +39,28 @@ input,select,button{font-family:'Noto Sans Arabic','Segoe UI',sans-serif}
 <script>
 // ── TRANSLATIONS ─────────────────────────────────────────────────────────────
 var LANG = 'ar';
+var CUR = 'BD';
+var CURRENCIES = [
+  {code:'BD',ar:'دينار بحريني',en:'Bahraini Dinar'},
+  {code:'SAR',ar:'ريال سعودي',en:'Saudi Riyal'},
+  {code:'AED',ar:'درهم إماراتي',en:'UAE Dirham'},
+  {code:'KWD',ar:'دينار كويتي',en:'Kuwaiti Dinar'},
+  {code:'QAR',ar:'ريال قطري',en:'Qatari Riyal'},
+  {code:'OMR',ar:'ريال عماني',en:'Omani Rial'},
+  {code:'EGP',ar:'جنيه مصري',en:'Egyptian Pound'},
+  {code:'JOD',ar:'دينار أردني',en:'Jordanian Dinar'},
+  {code:'LBP',ar:'ليرة لبنانية',en:'Lebanese Pound'},
+  {code:'IQD',ar:'دينار عراقي',en:'Iraqi Dinar'},
+  {code:'SYP',ar:'ليرة سورية',en:'Syrian Pound'},
+  {code:'YER',ar:'ريال يمني',en:'Yemeni Rial'},
+  {code:'MAD',ar:'درهم مغربي',en:'Moroccan Dirham'},
+  {code:'DZD',ar:'دينار جزائري',en:'Algerian Dinar'},
+  {code:'TND',ar:'دينار تونسي',en:'Tunisian Dinar'},
+  {code:'LYD',ar:'دينار ليبي',en:'Libyan Dinar'},
+  {code:'SDG',ar:'جنيه سوداني',en:'Sudanese Pound'},
+  {code:'USD',ar:'دولار أمريكي',en:'US Dollar'},
+  {code:'EUR',ar:'يورو',en:'Euro'},
+];
 var TR = {
   ar: {
     dir:'rtl', langBtnPos:'left:16px',
@@ -90,7 +112,7 @@ var TR = {
     // goals
     goalsTitle:'الأهداف المالية', goalsSub:'حدد أهدافك وسنحسب القسط الشهري',
     goalTypes:['التقاعد','شراء منزل','التعليم','شراء سيارة','طوارئ','بناء الثروة'],
-    targetL:'المبلغ (BD)', yearsL:'المدة (سنوات)', yearsPfx:'سنة',
+    targetL:'المبلغ', yearsL:'المدة (سنوات)', yearsPfx:'سنة',
     addGoalBtn:'+ إضافة الهدف', noGoals:'لم تضف أهدافاً بعد',
     // diagnosis
     diagHeading:'تقرير الصحة المالية الشامل',
@@ -111,7 +133,7 @@ var TR = {
     projTitle:'📈 إسقاطات الثروة', projSub:'شهرياً بعائد 8% سنوياً',
     projLbl:'القيمة المتوقعة بعد {y} سنوات',
     goalsHdr:'🎯 خطة الأهداف',
-    goalAvail:'% من التوفير المتاح', goalNeed:'BD {m}/شهر · خلال {y} سنة',
+    goalAvail:'% من التوفير المتاح', goalNeed:'{CUR} {m}/شهر · خلال {y} سنة',
     debtHdr:'🏦 خطة تصفية الديون',
     snowballT:'كرة الثلج ❄️', snowballD:'ابدأ بأصغر دين', snowballS:'يبني الدافعية',
     avalancheT:'الانهيار الجليدي 🏔️', avalancheD:'ابدأ بأعلى فائدة', avalancheS:'يوفر أكثر',
@@ -122,6 +144,7 @@ var TR = {
     aiRetry:'🔄 إعادة التشخيص',
     secNote:'🔒 جميع بيانات العميل محفوظة بشكل آمن وتُعامَل بسرية تامة',
     aiSystem:'أنت "الدكتور المالي" في منصة Cash Clinic Pro. تحدث بالعربية الخليجية. قدّم 4-5 توصيات مرقّمة مع رموز. أضف "⭐ الخطوة الأولى الأهم" في النهاية.',
+    askTitle:'💬 اسأل الدكتور المالي', askPlaceholder:'اكتب سؤالك هنا...', askBtn:'إرسال',
   },
   en: {
     dir:'ltr', langBtnPos:'right:16px',
@@ -165,7 +188,7 @@ var TR = {
     riskNames:['Conservative','Moderate','Balanced','Growth','Aggressive'],
     goalsTitle:'Financial Goals', goalsSub:'Set goals and we calculate monthly savings needed',
     goalTypes:['Retirement','Buy a Home','Education','Buy a Car','Emergency Fund','Wealth Building'],
-    targetL:'Target Amount (BD)', yearsL:'Time Frame (years)', yearsPfx:'yrs',
+    targetL:'Target Amount', yearsL:'Time Frame (years)', yearsPfx:'yrs',
     addGoalBtn:'+ Add Goal', noGoals:'No goals added yet',
     diagHeading:'Comprehensive Financial Health Report',
     netWorthL:'Net Worth', assetsL:'Assets', debtsL:'Debts',
@@ -185,7 +208,7 @@ var TR = {
     projTitle:'📈 Wealth Projections', projSub:'/mo at 8% annual return',
     projLbl:'Expected value in {y} years',
     goalsHdr:'🎯 Goals Plan',
-    goalAvail:'% of available savings', goalNeed:'BD {m}/mo · in {y} yrs',
+    goalAvail:'% of available savings', goalNeed:'{CUR} {m}/mo · in {y} yrs',
     debtHdr:'🏦 Debt Elimination Plan',
     snowballT:'Snowball ❄️', snowballD:'Pay smallest debt first', snowballS:'Builds momentum',
     avalancheT:'Avalanche 🏔️', avalancheD:'Pay highest interest first', avalancheS:'Saves more money',
@@ -196,6 +219,7 @@ var TR = {
     aiRetry:'🔄 Re-analyze',
     secNote:'🔒 All client data is stored securely and treated with complete confidentiality',
     aiSystem:'You are the "AI Financial Doctor" at Cash Clinic Pro. Respond in English. Provide 4-5 numbered recommendations with emojis. End with "⭐ Most Important First Step".',
+    askTitle:'💬 Ask the Financial Doctor', askPlaceholder:'Type your question...', askBtn:'Send',
   }
 };
 </script>
@@ -267,7 +291,7 @@ function Ring({score,size=120,label,color='#C9A84C'}){
   );
 }
 
-function Inp({label,value,onChange,pfx='BD',type='number',hint}){
+function Inp({label,value,onChange,pfx=CUR,type='number',hint}){
   return(
     <div style={{marginBottom:14}}>
       <label style={{display:'block',fontSize:12,color:'#8aad8a',marginBottom:5,fontWeight:600}}>{label}</label>
@@ -331,12 +355,65 @@ function SecHdr({icon,title,sub}){
   );
 }
 
+
+function renderMD(text){
+  if(!text) return null;
+  const lines = text.split('\n');
+  return lines.map((line,i)=>{
+    let s = line.trim();
+    if(!s) return <div key={i} style={{height:8}}/>;
+    // headings
+    if(s.startsWith('###')) { s=s.replace(/^#+\s*/,''); return <div key={i} style={{fontSize:15,fontWeight:900,color:'#C9A84C',marginTop:12,marginBottom:6}}>{cleanMD(s)}</div>; }
+    if(s.startsWith('##')) { s=s.replace(/^#+\s*/,''); return <div key={i} style={{fontSize:16,fontWeight:900,color:'#C9A84C',marginTop:14,marginBottom:6}}>{cleanMD(s)}</div>; }
+    if(s.startsWith('#')) { s=s.replace(/^#+\s*/,''); return <div key={i} style={{fontSize:17,fontWeight:900,color:'#C9A84C',marginTop:14,marginBottom:6}}>{cleanMD(s)}</div>; }
+    if(s==='---') return <div key={i} style={{height:1,background:'#2a4a2a',margin:'10px 0'}}/>;
+    if(s.startsWith('>')) { s=s.replace(/^>\s*/,''); return <div key={i} style={{borderRight:'3px solid #C9A84C',paddingRight:10,margin:'8px 0',color:'#C9A84C',fontStyle:'italic'}}>{cleanMD(s)}</div>; }
+    if(s.startsWith('- ')||s.startsWith('* ')) { s=s.replace(/^[-*]\s*/,''); return <div key={i} style={{display:'flex',gap:8,marginBottom:5}}><span style={{color:'#C9A84C'}}>•</span><span style={{flex:1}}>{cleanMD(s)}</span></div>; }
+    if(/^\d+\.\s/.test(s)) { const num=s.match(/^(\d+)\./)[1]; s=s.replace(/^\d+\.\s*/,''); return <div key={i} style={{display:'flex',gap:8,marginBottom:5}}><span style={{color:'#C9A84C',fontWeight:900,minWidth:18}}>{num}.</span><span style={{flex:1}}>{cleanMD(s)}</span></div>; }
+    return <div key={i} style={{marginBottom:6,lineHeight:1.8}}>{cleanMD(s)}</div>;
+  });
+}
+function cleanMD(s){
+  // bold **text** -> styled spans
+  const parts = s.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((p,j)=>{
+    if(p.startsWith('**')&&p.endsWith('**')) return <strong key={j} style={{color:'#e8c96a',fontWeight:900}}>{p.slice(2,-2)}</strong>;
+    return <span key={j}>{p}</span>;
+  });
+}
+
 function AIDoc({metrics}){
   const [adv,setAdv]=useState(null);
   const [load,setLoad]=useState(false);
   const [asked,setAsked]=useState(false);
+  const [q,setQ]=useState('');
+  const [qa,setQa]=useState([]);
+  const [qLoad,setQLoad]=useState(false);
   const L=useL();
   const m=metrics;
+  const askQ=async()=>{
+    if(!q.trim()||qLoad)return;
+    const question=q.trim();
+    setQ('');setQLoad(true);
+    try{
+      const res=await fetch('https://cash-clinic-ai.bahrain-first.workers.dev',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model:'claude-haiku-4-5-20251001',max_tokens:800,
+          system:L.aiSystem+' المستخدم سيسأل أسئلة متابعة عن وضعه المالي. أجب باختصار ووضوح.',
+          messages:[
+            {role:'user',content:`بياناتي المالية: الدخل ${CUR} ${fmt(m.ti)}, التدفق ${CUR} ${fmt(m.cf)}, نسبة الديون ${Math.round(m.dr)}%, الجاهزية ${Math.round(m.rd)}/100, صافي الثروة ${CUR} ${fmt(m.nw)}. التشخيص السابق: ${adv?adv.slice(0,500):''}`},
+            {role:'assistant',content:'فهمت وضعك المالي. تفضل بسؤالك.'},
+            {role:'user',content:question}
+          ]
+        })
+      });
+      const d=await res.json();
+      const ans=d.content&&d.content[0]&&d.content[0].text?d.content[0].text:(d.error?('⚠️ '+(d.error.message||d.error)):'⚠️ خطأ');
+      setQa(prev=>[...prev,{q:question,a:ans}]);
+    }catch(e){setQa(prev=>[...prev,{q:question,a:'⚠️ '+e.message}]);}
+    setQLoad(false);
+  };
   const ask=async()=>{
     setLoad(true);setAsked(true);
     try{
@@ -346,14 +423,14 @@ function AIDoc({metrics}){
           model:'claude-haiku-4-5-20251001',max_tokens:1000,
           system:L.aiSystem,
           messages:[{role:'user',content:`Financial data:
-- Monthly Income: BD ${fmt(m.ti)}
-- Cash Flow: BD ${fmt(m.cf)} (${m.cf>=0?'positive':'negative'})
+- Currency: ${CUR}\n- Monthly Income: ${CUR} ${fmt(m.ti)}
+- Cash Flow: ${CUR} ${fmt(m.cf)} (${m.cf>=0?'positive':'negative'})
 - Debt Ratio: ${Math.round(m.dr)}%
 - Emergency Months: ${m.em.toFixed(1)}
 - Savings Rate: ${Math.round(m.sr)}%
 - Investment Readiness: ${Math.round(m.rd)}/100
 - Health Score: ${m.hs}/100
-- Net Worth: BD ${fmt(m.nw)}
+- Net Worth: ${CUR} ${fmt(m.nw)}
 - Risk Profile: ${m.rp}`}]
         })
       });
@@ -388,10 +465,28 @@ function AIDoc({metrics}){
         </div>
       ):(
         <div>
-          <div style={{background:'#0d1a0d',borderRadius:10,padding:16,color:'#c8e0c8',fontSize:13,lineHeight:2.1,whiteSpace:'pre-wrap'}}>{adv}</div>
-          <button onClick={()=>{setAdv(null);setAsked(false);}} style={{background:'transparent',border:'1px solid #2a4a2a',borderRadius:8,padding:'8px 0',color:'#6a8a6a',fontSize:12,cursor:'pointer',width:'100%',marginTop:10}}>
+          <div style={{background:'#0d1a0d',borderRadius:10,padding:16,color:'#c8e0c8',fontSize:13}}>{renderMD(adv)}</div>
+          <button onClick={()=>{setAdv(null);setAsked(false);setQa([]);}} style={{background:'transparent',border:'1px solid #2a4a2a',borderRadius:8,padding:'8px 0',color:'#6a8a6a',fontSize:12,cursor:'pointer',width:'100%',marginTop:10}}>
             {L.aiRetry}
           </button>
+          <div style={{marginTop:16,borderTop:'1px solid #1a2a1a',paddingTop:14}}>
+            <div style={{fontSize:13,fontWeight:800,color:'#C9A84C',marginBottom:10}}>{L.askTitle}</div>
+            {qa.map((item,qi)=>(
+              <div key={qi} style={{marginBottom:12}}>
+                <div style={{background:'#142014',borderRadius:'10px 10px 10px 2px',padding:'8px 12px',marginBottom:6,fontSize:13,color:'#c8e0c8'}}>🧑 {item.q}</div>
+                <div style={{background:'#0d1a0d',borderRadius:'10px 10px 2px 10px',padding:'10px 12px',fontSize:13,color:'#c8e0c8'}}>🩺 {renderMD(item.a)}</div>
+              </div>
+            ))}
+            {qLoad&&<div style={{textAlign:'center',padding:10,color:'#8aad8a',fontSize:12}}>⚕️ ...</div>}
+            <div style={{display:'flex',gap:8,marginTop:8}}>
+              <input value={q} onChange={e=>setQ(e.target.value)} placeholder={L.askPlaceholder}
+                onKeyDown={e=>{if(e.key==='Enter')askQ();}}
+                style={{flex:1,background:'#0f1f0f',border:'1px solid #2a4a2a',borderRadius:8,padding:'10px 12px',color:'#e8f0e8',fontSize:13,outline:'none'}}/>
+              <button onClick={askQ} disabled={qLoad} style={{background:'#C9A84C',border:'none',borderRadius:8,padding:'0 16px',color:'#0a0f0a',fontWeight:900,fontSize:14,cursor:'pointer'}}>
+                {L.askBtn}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -438,14 +533,14 @@ function DiagPage({metrics,goals,projYears,setProjYears}){
       <div style={{background:m.nw>=0?'linear-gradient(135deg,#0a2a0a,#162616)':'linear-gradient(135deg,#2a0a0a,#1a0808)',border:`1px solid ${m.nw>=0?'#4CAF5044':'#F4433644'}`,borderRadius:14,padding:16,marginBottom:14,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
         <div>
           <div style={{fontSize:11,color:'#8aad8a'}}>{L.netWorthL}</div>
-          <div style={{fontSize:24,fontWeight:900,color:m.nw>=0?'#4CAF50':'#F44336'}}>BD {fmt(m.nw)}</div>
-          <div style={{fontSize:10,color:'#4a6a4a',marginTop:2}}>{L.assetsL}: BD {fmt(m.ta)} | {L.debtsL}: BD {fmt(m.tl)}</div>
+          <div style={{fontSize:24,fontWeight:900,color:m.nw>=0?'#4CAF50':'#F44336'}}>{CUR} {fmt(m.nw)}</div>
+          <div style={{fontSize:10,color:'#4a6a4a',marginTop:2}}>{L.assetsL}: {CUR} {fmt(m.ta)} | {L.debtsL}: {CUR} {fmt(m.tl)}</div>
         </div>
         <div style={{fontSize:32}}>{m.nw>=0?'📈':'📉'}</div>
       </div>
       {/* Cards */}
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
-        <Card icon='💵' label={L.cfL} value={`BD ${fmt(m.cf)}`} sub={m.cf>=0?L.posL:L.negL} color={cfc}/>
+        <Card icon='💵' label={L.cfL} value={`${CUR} ${fmt(m.cf)}`} sub={m.cf>=0?L.posL:L.negL} color={cfc}/>
         <Card icon='⚖️' label={L.drL} value={`${Math.round(m.dr)}%`} sub={dl} color={dc}/>
         <Card icon='🛡️' label={L.emL} value={`${m.em.toFixed(1)} ${L.emUnit}`} sub={m.em>=6?L.hLabels[4]:m.em>=3?L.hLabels[3]:L.hLabels[1]} color={ec}/>
         <Card icon='💰' label={L.srL} value={`${Math.round(m.sr)}%`} sub={m.sr>=20?L.hLabels[4]:m.sr>=10?L.hLabels[3]:L.hLabels[1]} color={sc}/>
@@ -458,8 +553,8 @@ function DiagPage({metrics,goals,projYears,setProjYears}){
         <Bar pct={m.ti>0?(m.md/m.ti)*100:0} label={L.debtBarL} color='#F44336'/>
         <Bar pct={Math.max(0,m.sr)} label={L.savBarL} color='#4CAF50'/>
         <div style={{display:'flex',justifyContent:'space-between',marginTop:12,paddingTop:10,borderTop:'1px solid #1a2a1a'}}>
-          <span style={{fontSize:11,color:'#8aad8a'}}>{L.incTotalL}: BD {fmt(m.ti)}</span>
-          <span style={{fontSize:11,color:'#8aad8a'}}>{L.expTotalL}: BD {fmt(m.te)}</span>
+          <span style={{fontSize:11,color:'#8aad8a'}}>{L.incTotalL}: {CUR} {fmt(m.ti)}</span>
+          <span style={{fontSize:11,color:'#8aad8a'}}>{L.expTotalL}: {CUR} {fmt(m.te)}</span>
         </div>
       </div>
       {/* Readiness */}
@@ -485,7 +580,7 @@ function DiagPage({metrics,goals,projYears,setProjYears}){
       {m.sav>0&&(
         <div style={{background:'#0f1f0f',border:'1px solid #2a4a2a',borderRadius:14,padding:18,marginBottom:14}}>
           <div style={{fontSize:13,fontWeight:800,color:'#C9A84C',marginBottom:4}}>{L.projTitle}</div>
-          <div style={{fontSize:10,color:'#4a6a4a',marginBottom:12}}>BD {fmt(m.sav)} {L.projSub}</div>
+          <div style={{fontSize:10,color:'#4a6a4a',marginBottom:12}}>{CUR} {fmt(m.sav)} {L.projSub}</div>
           <div style={{display:'flex',gap:6,marginBottom:14}}>
             {[3,5,10,20,30].map(y=>(
               <button key={y} onClick={()=>setProjYears(y)} style={{flex:1,background:projYears===y?'#C9A84C22':'#0a150a',border:`1px solid ${projYears===y?'#C9A84C':'#1a2a1a'}`,borderRadius:8,padding:'6px 0',color:projYears===y?'#C9A84C':'#6a8a6a',fontSize:11,fontWeight:projYears===y?700:400,cursor:'pointer'}}>
@@ -504,7 +599,7 @@ function DiagPage({metrics,goals,projYears,setProjYears}){
           </div>
           <div style={{textAlign:'center'}}>
             <div style={{fontSize:10,color:'#6a8a6a'}}>{L.projLbl.replace('{y}',projYears)}</div>
-            <div style={{fontSize:26,fontWeight:900,color:'#C9A84C'}}>BD {fmt(sp.v)}</div>
+            <div style={{fontSize:26,fontWeight:900,color:'#C9A84C'}}>{CUR} {fmt(sp.v)}</div>
           </div>
         </div>
       )}
@@ -519,10 +614,10 @@ function DiagPage({metrics,goals,projYears,setProjYears}){
               <div key={g.id} style={{background:'#0a150a',borderRadius:10,padding:12,marginBottom:10}}>
                 <div style={{display:'flex',justifyContent:'space-between',marginBottom:8}}>
                   <div style={{fontWeight:700,color:'#c8e0c8',fontSize:13}}>{gt?.icon} {gt?.label}</div>
-                  <div style={{color:'#C9A84C',fontWeight:700,fontSize:13}}>BD {fmt(g.target)}</div>
+                  <div style={{color:'#C9A84C',fontWeight:700,fontSize:13}}>{CUR} {fmt(g.target)}</div>
                 </div>
                 <Bar pct={pct} label={`${Math.round(pct)}${L.goalAvail}`} color={pct>=100?'#4CAF50':'#FFC107'}/>
-                <div style={{fontSize:10,color:'#6a8a6a'}}>{L.goalNeed.replace('{m}',fmt(g.monthly)).replace('{y}',g.years)}</div>
+                <div style={{fontSize:10,color:'#6a8a6a'}}>{L.goalNeed.replace('{CUR}',CUR).replace('{m}',fmt(g.monthly)).replace('{y}',g.years)}</div>
               </div>
             );
           })}
@@ -542,7 +637,7 @@ function DiagPage({metrics,goals,projYears,setProjYears}){
             ))}
           </div>
           <div style={{background:'#0a0808',borderRadius:10,padding:12}}>
-            {[[L.totalDebtL,`BD ${fmt(m.tl)}`,'#F44336'],[L.monthPayL,`BD ${fmt(m.md)}`,'#FF9800'],[L.freedomL,`${Math.ceil(m.tl/(m.md||1))} ${L.freedomUnit}`,'#FFC107']].map((r,i)=>(
+            {[[L.totalDebtL,`${CUR} ${fmt(m.tl)}`,'#F44336'],[L.monthPayL,`${CUR} ${fmt(m.md)}`,'#FF9800'],[L.freedomL,`${Math.ceil(m.tl/(m.md||1))} ${L.freedomUnit}`,'#FFC107']].map((r,i)=>(
               <div key={i} style={{display:'flex',justifyContent:'space-between',marginBottom:i<2?8:0}}>
                 <span style={{fontSize:11,color:'#8a6a6a'}}>{r[0]}</span>
                 <span style={{color:r[2],fontWeight:700,fontSize:12}}>{r[1]}</span>
@@ -563,6 +658,7 @@ function DiagPage({metrics,goals,projYears,setProjYears}){
 function App(){
   const [step,setStep]=useState(0);
   const [lang,setLang]=useState('ar');
+  const [cur,setCur]=useState('BD');
   const [personal,setPersonal]=useState({name:'',age:'',marital:'',dependents:'0',employment:''});
   const [income,setIncome]=useState({salary:'',freelance:'',rental:'',other:''});
   const [assets,setAssets]=useState({cash:'',bank:'',gold:'',realestate:'',vehicles:'',stocks:'',crypto:'',other:''});
@@ -635,7 +731,7 @@ function App(){
           <Inp label={L.otherIncL} value={income.other} onChange={v=>setIncome({...income,other:v})}/>
           {metrics.ti>0&&<div style={{background:'#0f2a0f',border:'1px solid #C9A84C44',borderRadius:10,padding:14,marginTop:4}}>
             <div style={{color:'#8aad8a',fontSize:11}}>{L.totalIncL}</div>
-            <div style={{color:'#C9A84C',fontSize:22,fontWeight:900}}>BD {fmt(metrics.ti)}</div>
+            <div style={{color:'#C9A84C',fontSize:22,fontWeight:900}}>{CUR} {fmt(metrics.ti)}</div>
           </div>}
         </div>
       );
@@ -647,7 +743,7 @@ function App(){
           ))}
           {metrics.ta>0&&<div style={{background:'#0f2a0f',border:'1px solid #4CAF5044',borderRadius:10,padding:14}}>
             <div style={{color:'#8aad8a',fontSize:11}}>{L.totalAssL}</div>
-            <div style={{color:'#4CAF50',fontSize:22,fontWeight:900}}>BD {fmt(metrics.ta)}</div>
+            <div style={{color:'#4CAF50',fontSize:22,fontWeight:900}}>{CUR} {fmt(metrics.ta)}</div>
           </div>}
         </div>
       );
@@ -738,8 +834,8 @@ function App(){
                   <div style={{color:'#6a8a6a',fontSize:11,marginTop:2}}>{L.goalTypes&&`${L.steps[7]}: ${g.years}`}</div>
                 </div>
                 <div style={{textAlign:'left'}}>
-                  <div style={{color:'#C9A84C',fontWeight:900}}>BD {fmt(g.target)}</div>
-                  <div style={{color:'#8aad8a',fontSize:11}}>BD {fmt(g.monthly)}/{lang==='ar'?'شهر':'mo'}</div>
+                  <div style={{color:'#C9A84C',fontWeight:900}}>{CUR} {fmt(g.target)}</div>
+                  <div style={{color:'#8aad8a',fontSize:11}}>{CUR} {fmt(g.monthly)}/{lang==='ar'?'شهر':'mo'}</div>
                 </div>
               </div>
             );
@@ -766,6 +862,10 @@ function App(){
         }}>
         {L.langBtn}
       </button>
+      <select value={cur} onChange={e=>{CUR=e.target.value;setCur(e.target.value);}}
+        style={{position:'fixed',top:13,[isRTL?'left':'right']:'70px',zIndex:300,background:'#0f1f0f',border:'1px solid #C9A84C88',borderRadius:20,padding:'5px 8px',fontSize:12,fontWeight:800,color:'#C9A84C',outline:'none',maxWidth:90}}>
+        {CURRENCIES.map(c=><option key={c.code} value={c.code}>{c.code} · {lang==='ar'?c.ar:c.en}</option>)}
+      </select>
       {/* Header */}
       <div style={{background:'linear-gradient(180deg,#0a1a0a,#070e07)',borderBottom:'1px solid #C9A84C22',padding:'12px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:50}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
