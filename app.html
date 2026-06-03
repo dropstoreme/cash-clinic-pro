@@ -343,7 +343,7 @@ function AIDoc({metrics}){
       const res=await fetch('https://cash-clinic-ai.bahrain-first.workers.dev',{
         method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
-          model:'claude-sonnet-4-20250514',max_tokens:1000,
+          model:'claude-haiku-4-5-20251001',max_tokens:1000,
           system:L.aiSystem,
           messages:[{role:'user',content:`Financial data:
 - Monthly Income: BD ${fmt(m.ti)}
@@ -358,8 +358,14 @@ function AIDoc({metrics}){
         })
       });
       const d=await res.json();
-      setAdv(d.content?.[0]?.text||'Error');
-    }catch{setAdv('⚠️ Connection error. Please try again.');}
+      if(d.content&&d.content[0]&&d.content[0].text){
+        setAdv(d.content[0].text);
+      } else if(d.error){
+        setAdv('⚠️ '+(d.error.message||d.error));
+      } else {
+        setAdv('⚠️ '+JSON.stringify(d).slice(0,200));
+      }
+    }catch(e){setAdv('⚠️ '+e.message);}
     setLoad(false);
   };
   return(
